@@ -41,9 +41,15 @@ export async function handleRewarded(rewardEvent: SubstrateEvent): Promise<void>
 }
 
 export async function handleReward(rewardEvent: SubstrateEvent): Promise<void> {
-    await handleRewardRestakeForAnalytics(rewardEvent)
-    await handleRewardForTxHistory(rewardEvent)
-    await updateAccumulatedReward(rewardEvent, true)
+    let {event: {data: [accountId]}} = rewardEvent
+    if (accountId.toRawType() == "Balance") {
+        logger.warn("Type of 1st argument is Balance");
+    } else {
+        await handleRewardRestakeForAnalytics(rewardEvent)
+        await handleRewardForTxHistory(rewardEvent)
+        await updateAccumulatedReward(rewardEvent, true)
+    }
+
     // let rewardEventId = eventId(rewardEvent)
     // try {
     //     let errorOccursOnEvent = await ErrorEvent.get(rewardEventId)
@@ -88,7 +94,7 @@ async function handleRewardForTxHistory(rewardEvent: SubstrateEvent): Promise<vo
 
     for (const eventRecord of rewardEvent.block.events) {
         if (
-            eventRecord.event.section == rewardEvent.event.section && 
+            eventRecord.event.section == rewardEvent.event.section &&
             eventRecord.event.method == rewardEvent.event.method) {
 
             let {event: {data: [account, _]}} = eventRecord
@@ -205,7 +211,7 @@ async function handleSlashForTxHistory(slashEvent: SubstrateEvent): Promise<void
     const currentEra = (await api.query.staking.currentEra()).unwrap()
     const slashDeferDuration = api.consts.staking.slashDeferDuration
 
-    const slashEra = slashDeferDuration == undefined 
+    const slashEra = slashDeferDuration == undefined
     ? currentEra.toNumber()
     : currentEra.toNumber() - slashDeferDuration.toNumber()
 
