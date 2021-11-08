@@ -179,7 +179,7 @@ export async function handleSlashed(slashEvent: SubstrateEvent): Promise<void> {
 
 export async function handleSlash(slashEvent: SubstrateEvent): Promise<void> {
     await handleSlashForAnalytics(slashEvent)
-    await handleSlashForTxHistory(slashEvent)
+    //await handleSlashForTxHistory(slashEvent)
     await updateAccumulatedReward(slashEvent, false)
     // let slashEventId = eventId(slashEvent)
     // try {
