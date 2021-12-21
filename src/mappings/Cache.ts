@@ -10,20 +10,20 @@ let controllersByStash: {[blockId: string]: {[address: string]: string}} = {}
 export async function cachedRewardDestination(accountAddress: string, event: SubstrateEvent): Promise<RewardDestination> {
     const blockId = blockNumber(event)
     let cachedBlock = rewardDestinationByAddress[blockId]
-    
+
     if (cachedBlock !== undefined) {
         return cachedBlock[accountAddress]
     } else {
         rewardDestinationByAddress = {}
-        
+
         let method = event.event.method
         let section = event.event.section
 
         const allAccountsInBlock = event.block.events
-            .filter(blockEvent => { 
+            .filter(blockEvent => {
                 return blockEvent.event.method == method && blockEvent.event.section == section
             })
-            .map(event => { 
+            .map(event => {
                 let {event: {data: [accountId, ]}} = event
                 return accountId
             });
@@ -34,11 +34,14 @@ export async function cachedRewardDestination(accountAddress: string, event: Sub
             return await api.query.staking.payee(accountAddress)
         }
 
-        const payees = await api.query.staking.payee.multi(allAccountsInBlock);
-        const rewardDestinations = payees.map(payee => { return payee as RewardDestination });
-        
+        let rewardDestinations: Array<RewardDestination> = [];
+        for (let account of allAccountsInBlock) {
+            const payee = await api.query.staking.payee(account)
+            rewardDestinations.push(payee as RewardDestination);
+        }
+
         let destinationByAddress: {[address: string]: RewardDestination} = {}
-        
+
         // something went wrong, so just query for single accountAddress
         if (rewardDestinations.length !== allAccountsInBlock.length) {
             const payee = await api.query.staking.payee(accountAddress)
@@ -46,7 +49,7 @@ export async function cachedRewardDestination(accountAddress: string, event: Sub
             rewardDestinationByAddress[blockId] = destinationByAddress
             return payee
         }
-        allAccountsInBlock.forEach((account, index) => { 
+        allAccountsInBlock.forEach((account, index) => {
             let accountAddress = account.toString()
             let rewardDestination = rewardDestinations[index]
             destinationByAddress[accountAddress] = rewardDestination
@@ -59,20 +62,20 @@ export async function cachedRewardDestination(accountAddress: string, event: Sub
 export async function cachedController(accountAddress: string, event: SubstrateEvent): Promise<string> {
     const blockId = blockNumber(event)
     let cachedBlock = controllersByStash[blockId]
-    
+
     if (cachedBlock !== undefined) {
         return cachedBlock[accountAddress]
     } else {
         controllersByStash = {}
-        
+
         let method = event.event.method
         let section = event.event.section
 
         const allAccountsInBlock = event.block.events
-            .filter(blockEvent => { 
+            .filter(blockEvent => {
                 return blockEvent.event.method == method && blockEvent.event.section == section
             })
-            .map(event => { 
+            .map(event => {
                 let {event: {data: [accountId, ]}} = event
                 return accountId
             });
@@ -96,9 +99,9 @@ export async function cachedController(accountAddress: string, event: SubstrateE
 
         const bonded = await api.query.staking.bonded.multi(controllerNeedAccounts);
         const controllers = bonded.map(bonded => { return bonded.toString() });
-        
+
         let bondedByAddress: {[address: string]: string} = {}
-        
+
         // something went wrong, so just query for single accountAddress
         if (controllers.length !== controllerNeedAccounts.length) {
             const controller = await api.query.staking.bonded(accountAddress)
@@ -107,7 +110,7 @@ export async function cachedController(accountAddress: string, event: SubstrateE
             controllersByStash[blockId] = bondedByAddress
             return controllerAddress
         }
-        controllerNeedAccounts.forEach((account, index) => { 
+        controllerNeedAccounts.forEach((account, index) => {
             let accountAddress = account.toString()
             bondedByAddress[accountAddress] = controllers[index]
         })
