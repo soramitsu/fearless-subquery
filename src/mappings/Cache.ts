@@ -2,6 +2,7 @@ import {SubstrateEvent} from "@subql/types";
 import {blockNumber, eventId, timestamp} from "./common";
 import {Balance, AccountId} from "@polkadot/types/interfaces";
 import {RewardDestination} from "@polkadot/types/interfaces/staking";
+import {Option} from "@polkadot/types";
 
 // Due to memory consumption optimization `rewardDestinationByAddress` contains only one key
 let rewardDestinationByAddress: {[blockId: string]: {[address: string]: RewardDestination}} = {}
@@ -97,7 +98,11 @@ export async function cachedController(accountAddress: string, event: SubstrateE
             return accountId.toString()
         }
 
-        const bonded = await api.query.staking.bonded.multi(controllerNeedAccounts);
+        const bonded: Array<Option<AccountId>> = [];
+        for (let controllerNeededAccount of controllerNeedAccounts) {
+            const bond = await api.query.staking.bonded(controllerNeededAccount)
+            bonded.push(bond as Option<AccountId>);
+        }
         const controllers = bonded.map(bonded => { return bonded.toString() });
 
         let bondedByAddress: {[address: string]: string} = {}
