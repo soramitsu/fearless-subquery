@@ -3,11 +3,67 @@ description: Fearless SubQuery project
 repository: 'https://github.com/soramitsu/fearless-subquery'
 schema: ./schema.graphql
 network:
-  endpoint: 'wss://kusama.api.onfinality.io/ws?apikey=313214ec-15ef-4834-a896-1cf39911f94b'
+  endpoint: wss://rpc.shiden.astar.network
+  types: {
+    {
+    "Keys": "AccountId",
+    "SmartContract": {
+        "_enum": {
+            "Evm": "H160",
+            "Wasm": "AccountId"
+        }
+    },
+    "EraIndex": "u32",
+    "EraStakingPoints": {
+        "total": "Balance",
+        "stakers": "BTreeMap<AccountId, Balance>",
+        "_formerStakedEra": "EraIndex",
+        "claimedRewards": "Balance"
+    },
+    "EraRewardAndStake": {
+        "rewards": "Balance",
+        "staked": "Balance"
+    }
+  }
+  }
+  typesBundle: {
+    {
+  "spec": {
+    "shiden": [
+      {
+        "minmax": [
+          0,
+          null
+        ],
+        "types": {
+          "Keys": "AccountId",
+          "SmartContract": {
+            "_enum": {
+              "Evm": "H160",
+              "Wasm": "AccountId"
+            }
+          },
+          "EraIndex": "u32",
+          "EraStakingPoints": {
+            "total": "Balance",
+            "stakers": "BTreeMap<AccountId, Balance>",
+            "_formerStakedEra": "EraIndex",
+            "claimedRewards": "Balance"
+          },
+          "EraRewardAndStake": {
+            "rewards": "Balance",
+            "staked": "Balance"
+          }
+        }
+      }
+    ]
+  }
+}
+  }
 dataSources:
   - name: main
     kind: substrate/Runtime
-    startBlock: 1
+    startBlock: 1000
 
     # polkadot test slash bloks: 3570179
 
