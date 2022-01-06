@@ -5,10 +5,8 @@ repository: 'https://github.com/soramitsu/fearless-subquery'
 schema: ./schema.graphql
 network:
   endpoint: wss://peregrine.kilt.io
-  types: {
-    "Keys": "SessionKeys1",
-  }
   typesBundle: {
+    {
   "spec": {
     "mashnet-node": {
       "types": [
@@ -5915,6 +5913,7 @@ network:
       ]
     }
   }
+}
 }
 dataSources:
   - name: main
