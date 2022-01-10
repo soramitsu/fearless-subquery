@@ -3,7 +3,19 @@ description: Fearless SubQuery project
 repository: 'https://github.com/soramitsu/fearless-subquery'
 schema: ./schema.graphql
 network:
-  endpoint: 'wss://kusama.api.onfinality.io/ws?apikey=313214ec-15ef-4834-a896-1cf39911f94b'
+  endpoint: wss://basilisk.api.onfinality.io/public-ws
+  types: {
+    "Balance": "u128",
+    "Index": "u32",
+    "Phase": "frame_system.Phase",
+    "Address": "sp_core.crypto.AccountId32",
+    "ExtrinsicSignature": "sp_runtime.MultiSignature",
+    "ParaId": "polkadot_parachain.primitives.Id",
+    "basilisk_runtime.Event": "GenericEvent",
+    "basilisk_runtime.Call": "GenericCall",
+    "sp_core.crypto.AccountId32": "GenericAccountId",
+    "pallet_identity.types.Data": "Data"
+  }
 dataSources:
   - name: main
     kind: substrate/Runtime
