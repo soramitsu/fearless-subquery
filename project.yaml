@@ -4,34 +4,24 @@ repository: 'https://github.com/soramitsu/fearless-subquery'
 schema: ./schema.graphql
 network:
   endpoint: wss://fullnode.altair.centrifuge.io
-  typesBundle: {
-    "types": [
-        {
-            "minmax": [
-                0,
-                null
-            ],
-            "types": {
-                "ParachainAccountIdOf": "AccountId",
-                "Proof": {
-                    "leafHash": "Hash",
-                    "sortedHashes": "Vec<Hash>"
-                },
-                "ProxyType": {
-                    "_enum": [
-                        "Any",
-                        "NonTransfer",
-                        "Governance",
-                        "_Staking",
-                        "NonProxy"
-                    ]
-                },
-                "RelayChainAccountId": "AccountId",
-                "RootHashOf": "Hash"
-            }
-        }
-    ]
-}
+  types: {
+              "ParachainAccountIdOf": "AccountId",
+              "Proof": {
+                  "leafHash": "Hash",
+                  "sortedHashes": "Vec<Hash>"
+              },
+              "ProxyType": {
+                  "_enum": [
+                      "Any",
+                      "NonTransfer",
+                      "Governance",
+                      "_Staking",
+                      "NonProxy"
+                  ]
+              },
+              "RelayChainAccountId": "AccountId",
+              "RootHashOf": "Hash"
+          }
 dataSources:
   - name: main
     kind: substrate/Runtime
