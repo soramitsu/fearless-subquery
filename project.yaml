@@ -3,7 +3,28 @@ description: Fearless SubQuery project
 repository: 'https://github.com/soramitsu/fearless-subquery'
 schema: ./schema.graphql
 network:
-  endpoint: 'wss://kusama.api.onfinality.io/ws?apikey=313214ec-15ef-4834-a896-1cf39911f94b'
+  endpoint: wss://kusama.rpc.robonomics.network/#
+  types: {
+                "Record": "Vec<u8>",
+                "Technics": "Vec<u8>",
+                "Economics": "{}",
+                "Report": {
+                    "index": "LiabilityIndex",
+                    "sender": "AccountId",
+                    "payload": "Vec<u8>",
+                    "signature": "MultiSignature"
+                },
+                "ReportFor": "Report",
+                "Agreement": {
+                    "technics": "Technics",
+                    "economics": "Economics",
+                    "promisee": "AccountId",
+                    "promisor": "AccountId",
+                    "promisee_signature": "MultiSignature",
+                    "promisor_signature": "MultiSignature"
+                },
+                "LiabilityIndex": "u32"
+            }
 dataSources:
   - name: main
     kind: substrate/Runtime
