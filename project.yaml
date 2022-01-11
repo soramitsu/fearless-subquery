@@ -3,20 +3,8 @@ description: Fearless SubQuery project
 repository: 'https://github.com/soramitsu/fearless-subquery'
 schema: ./schema.graphql
 network:
-  endpoint: wss://basilisk.api.onfinality.io/public-ws
-  typesBundle: {
-    "alias": {
-        "tokens": {
-            "AccountData": "OrmlAccountData"
-        }
-    },
-    "types": [
-        {
-            "minmax": [
-                0,
-                null
-            ],
-            "types": {
+  endpoint: wss://basilisk.api.onfinality.io/public-ws#
+  types: {
                 "AssetPair": {
                     "asset_in": "AssetId",
                     "asset_out": "AssetId"
@@ -136,9 +124,6 @@ network:
                 "Xcm": "XcmV1",
                 "XcmOrder": "XcmOrderV1"
             }
-        }
-    ]
-}
 dataSources:
   - name: main
     kind: substrate/Runtime
