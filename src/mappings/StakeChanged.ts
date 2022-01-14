@@ -71,31 +71,6 @@ export async function handleSlashForAnalytics(event: SubstrateEvent): Promise<vo
     await element.save()
 }
 
-export async function handleRewardRestakeForAnalytics(event: SubstrateEvent): Promise<void> {
-    let {event: {data: [accountId, amount]}} = event
-    let accountAddress = accountId.toString()
-
-    const payee = await cachedRewardDestination(accountAddress, event)
-    if (payee.isStaked) {
-        let amountBalance = (amount as Balance).toBigInt()
-        let accumulatedAmount = await handleAccumulatedStake(accountAddress, amountBalance)
-
-        const element = new StakeChange(eventId(event));
-        if (event.extrinsic !== undefined) {
-            element.extrinsicHash = event.extrinsic?.extrinsic.hash.toString()
-        }
-        element.blockNumber = event.block.block.header.number.toNumber()
-        element.eventIdx = event.idx
-        element.timestamp = timestamp(event.block)
-        element.address = accountAddress
-        element.amount = amountBalance
-        element.accumulatedAmount = accumulatedAmount
-        element.type = "rewarded"
-
-        await element.save()
-    }
-}
-
 async function handleAccumulatedStake(address: string, amount: bigint): Promise<bigint> {
     let accumulatedStake = await AccumulatedStake.get(address)
     if (accumulatedStake !== undefined) {

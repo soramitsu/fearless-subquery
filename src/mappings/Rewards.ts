@@ -13,7 +13,7 @@ import {CallBase} from "@polkadot/types/types/calls";
 import {AnyTuple} from "@polkadot/types/types/codec";
 import {EraIndex, RewardDestination} from "@polkadot/types/interfaces/staking"
 import {Balance} from "@polkadot/types/interfaces";
-import {handleRewardRestakeForAnalytics, handleSlashForAnalytics} from "./StakeChanged"
+import {handleSlashForAnalytics} from "./StakeChanged"
 import {cachedRewardDestination, cachedController} from "./Cache"
 
 function isPayoutStakers(call: CallBase<AnyTuple>): boolean {
@@ -34,121 +34,6 @@ function extractArgsFromPayoutValidator(call: CallBase<AnyTuple>, sender: string
     const [eraRaw] = call.args
 
     return [sender, (eraRaw as EraIndex).toNumber()]
-}
-
-export async function handleRewarded(rewardEvent: SubstrateEvent): Promise<void> {
-    await handleReward(rewardEvent)
-}
-
-export async function handleReward(rewardEvent: SubstrateEvent): Promise<void> {
-    let {event: {data: [accountId]}} = rewardEvent
-    if (accountId.toRawType() == "Balance") {
-        logger.warn("Type of 1st argument is Balance");
-    } else {
-        await handleRewardRestakeForAnalytics(rewardEvent)
-        await handleRewardForTxHistory(rewardEvent)
-        await updateAccumulatedReward(rewardEvent, true)
-    }
-
-    // let rewardEventId = eventId(rewardEvent)
-    // try {
-    //     let errorOccursOnEvent = await ErrorEvent.get(rewardEventId)
-    //     if (errorOccursOnEvent !== undefined) {
-    //         logger.info(`Skip rewardEvent: ${rewardEventId}`)
-    //         return;
-    //     }
-
-    //     await handleRewardRestakeForAnalytics(rewardEvent)
-    //     await handleRewardForTxHistory(rewardEvent)
-    //     await updateAccumulatedReward(rewardEvent, true)
-    // } catch (error) {
-    //     logger.error(`Got error on reward event: ${rewardEventId}: ${error.toString()}`)
-    //     let saveError = new ErrorEvent(rewardEventId)
-    //     saveError.description = error.toString()
-    //     await saveError.save()
-    // }
-}
-
-async function handleRewardForTxHistory(rewardEvent: SubstrateEvent): Promise<void> {
-    let element = await HistoryElement.get(eventId(rewardEvent))
-
-    if (element !== undefined) {
-        // already processed reward previously
-        return;
-    }
-
-    let payoutCallsArgs = rewardEvent.block.block.extrinsics
-        .map(extrinsic => determinePayoutCallsArgs(extrinsic.method, extrinsic.signer.toString()))
-        .filter(args => args.length != 0)
-        .flat()
-
-    if (payoutCallsArgs.length == 0) {
-        return
-    }
-
-    const payoutValidators = payoutCallsArgs.map(([validator,]) => validator)
-
-    const initialCallIndex = -1
-
-    var accountsMapping: {[address: string]: string} = {}
-
-    for (const eventRecord of rewardEvent.block.events) {
-        if (
-            eventRecord.event.section == rewardEvent.event.section &&
-            eventRecord.event.method == rewardEvent.event.method) {
-
-            let {event: {data: [account, _]}} = eventRecord
-
-            let accountAddress = account.toString()
-            let rewardDestination = await cachedRewardDestination(accountAddress, eventRecord as SubstrateEvent)
-
-            if (rewardDestination.isStaked || rewardDestination.isStash) {
-                accountsMapping[accountAddress] = accountAddress
-            } else if (rewardDestination.isController) {
-                accountsMapping[accountAddress] = await cachedController(accountAddress, eventRecord as SubstrateEvent)
-            } else if (rewardDestination.isAccount) {
-                accountsMapping[accountAddress] = rewardDestination.asAccount.toString()
-            }
-        }
-    }
-
-    await buildRewardEvents(
-        rewardEvent.block,
-        rewardEvent.extrinsic,
-        rewardEvent.event.method,
-        rewardEvent.event.section,
-        accountsMapping,
-        initialCallIndex,
-        (currentCallIndex, eventAccount) => {
-            if (payoutValidators.length > currentCallIndex + 1) {
-                return payoutValidators[currentCallIndex + 1] == eventAccount ? currentCallIndex + 1 : currentCallIndex
-            } else {
-                return currentCallIndex
-            }
-        },
-        (currentCallIndex, eventIdx, stash, amount) => {
-            if (currentCallIndex == -1) {
-                return {
-                    eventIdx: eventIdx,
-                    amount: amount,
-                    isReward: true,
-                    stash: stash,
-                    validator: "",
-                    era: -1
-                }
-            } else {
-                const [validator, era] = payoutCallsArgs[currentCallIndex]
-                return {
-                    eventIdx: eventIdx,
-                    amount: amount,
-                    isReward: true,
-                    stash: stash,
-                    validator: validator,
-                    era: era
-                }
-            }
-        }
-    )
 }
 
 function determinePayoutCallsArgs(causeCall: CallBase<AnyTuple>, sender: string) : [string, number][] {
