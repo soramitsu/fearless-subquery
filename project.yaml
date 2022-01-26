@@ -3,7 +3,7 @@ description: Fearless SubQuery project
 repository: 'https://github.com/soramitsu/fearless-subquery'
 schema: ./schema.graphql
 network:
-  endpoint: wss://acala-rpc-0.aca-api.network
+  endpoint: wss://acala.polkawallet.io
   types: {
     "CallOf": "Call",
     "DispatchTime": {
