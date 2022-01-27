@@ -6,11 +6,11 @@ export async function handleTransfer(event: SubstrateEvent): Promise<void> {
     const {event: {data: [from, to, ]}} = event;
 
     const elementFrom = new HistoryElement(eventId(event)+`-from`);
-    elementFrom.address = from.toString()
+    elementFrom.address = from.toString().toLowerCase()
     await populateTransfer(elementFrom, event)
 
     const elementTo = new HistoryElement(eventId(event)+`-to`);
-    elementTo.address = to.toString()
+    elementTo.address = to.toString().toLowerCase()
     await populateTransfer(elementTo, event)
 }
 
@@ -29,8 +29,8 @@ async function populateTransfer(element: HistoryElement, event: SubstrateEvent):
     const {event: {data: [from, to, amount]}} = event;
     element.transfer = {
         amount: amount.toString(),
-        from: from.toString(),
-        to: to.toString(),
+        from: from.toString().toLowerCase(),
+        to: to.toString().toLowerCase(),
         fee: calculateFeeAsString(event.extrinsic),
         eventIdx: event.idx,
         success: true
