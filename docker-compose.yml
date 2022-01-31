@@ -13,7 +13,7 @@ services:
   subquery-node:
     image: onfinality/subql-node:latest
     depends_on:
-      - postgres
+      - "postgres"
     restart: always
     environment:
       DB_USER: postgres
@@ -25,15 +25,13 @@ services:
       - ./:/app
     command:
       - -f=/app
-      - --log-level=debug
-      - --db-schema=app
 
   graphql-engine:
     image: onfinality/subql-query:latest
     ports:
       - 3000:3000
     depends_on:
-      - postgres
+      - "postgres"
     restart: always
     environment:
       DB_USER: postgres
