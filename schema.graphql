@@ -24,6 +24,7 @@ type HistoryElement @entity {
   address: String! @index
   extrinsic: Extrinsic
   transfer: Transfer
+  reward: String
 }
 
 type ErrorEvent @entity {
