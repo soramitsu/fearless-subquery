@@ -3,7 +3,7 @@ description: Fearless SubQuery project
 repository: 'https://github.com/soramitsu/fearless-subquery'
 schema: ./schema.graphql
 network:
-  endpoint: wss://pub.elara.patract.io/statemint
+  endpoint: wss://statemint-rpc.polkadot.io
 dataSources:
   - name: main
     kind: substrate/Runtime
