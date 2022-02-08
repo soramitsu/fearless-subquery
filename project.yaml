@@ -9,11 +9,10 @@ network:
   genesisHash: '0xfe58ea77779b7abda7da4ec526d14db9b1e9cd40a217c34892af80a9b332b76d'
   endpoint: wss://moonbeam.api.onfinality.io/public-ws#
   chaintypes:
-    # TODO change to js
-    file: ./types.json
+    file: ./dist/chaintypes.js
 dataSources:
   - kind: substrate/Runtime
-    startBlock: 200000
+    startBlock: 1
     mapping:
       file: ./dist/index.js
       handlers:
