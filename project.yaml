@@ -9,7 +9,7 @@ network:
   genesisHash: '0x9af9a64e6e4da8e3073901c3ff0cc4c3aad9563786d89daf6ad820b6e14a0b8b'
   endpoint: wss://api-kusama.interlay.io/parachain
   chaintypes:
-    file: ./types.json
+    file: ./dist/chaintypes.js
 dataSources:
   - kind: substrate/Runtime
     startBlock: 22000
