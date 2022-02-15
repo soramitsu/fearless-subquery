@@ -1,39 +1,75 @@
-import {HistoryElement} from '../types';
-import {SubstrateEvent} from "@subql/types";
-import {blockNumber, eventId, calculateFeeAsString, timestamp} from "./common";
+import { Codec } from "@polkadot/types/types";
+import { HistoryElement } from "../types";
+import { SubstrateEvent } from "@subql/types";
+import {
+  blockNumber,
+  eventId,
+  calculateFeeAsString,
+  timestamp,
+} from "./common";
 
-export async function handleTransfer(event: SubstrateEvent): Promise<void> {
-    const {event: {data: [from, to, ]}} = event;
+type TransferPayload = {
+  event: SubstrateEvent;
+  address: Codec;
+  from: Codec;
+  to: Codec;
+  amount: Codec;
+  suffix: string;
+  assetId?: string;
+};
 
-    const elementFrom = new HistoryElement(eventId(event)+`-from`);
-    elementFrom.address = from.toString()
-    await populateTransfer(elementFrom, event)
+export async function handleTokenTransfer(
+  event: SubstrateEvent
+): Promise<void> {
+  const {event: { data: [currencyId, from, to, amount] } } = event;
 
-    const elementTo = new HistoryElement(eventId(event)+`-to`);
-    elementTo.address = to.toString()
-    await populateTransfer(elementTo, event)
+  await createTransfer({
+    event,
+    address: from,
+    from,
+    to,
+    suffix: "-from",
+    amount,
+    assetId: currencyId.toHex().toString(),
+  });
+  await createTransfer({
+    event,
+    address: to,
+    from,
+    to,
+    suffix: "-to",
+    amount,
+    assetId: currencyId.toHex().toString(),
+  });
 }
 
-export async function handleTransferKeepAlive(event: SubstrateEvent): Promise<void> {
-    await handleTransfer(event)
-}
+async function createTransfer({
+  event,
+  address,
+  suffix,
+  from,
+  to,
+  amount,
+  assetId = null,
+}: TransferPayload) {
+  const element = new HistoryElement(`${eventId(event)}${suffix}`);
+  element.address = address.toString();
+  element.timestamp = timestamp(event.block);
+  element.blockNumber = blockNumber(event);
+  if (event.extrinsic !== undefined) {
+    element.extrinsicHash = event.extrinsic.extrinsic.hash.toString();
+    element.extrinsicIdx = event.extrinsic.idx;
+  }
 
-async function populateTransfer(element: HistoryElement, event: SubstrateEvent): Promise<void> {
-    element.timestamp = timestamp(event.block)
-    element.blockNumber = blockNumber(event);
-    if (event.extrinsic !== undefined) {
-        element.extrinsicHash = event.extrinsic.extrinsic.hash.toString();
-        element.extrinsicIdx = event.extrinsic.idx;
-    }
+  element.transfer = {
+    assetId,
+    amount: amount.toString(),
+    from: from.toString(),
+    to: to.toString(),
+    fee: calculateFeeAsString(event.extrinsic),
+    eventIdx: event.idx,
+    success: true,
+  };
 
-    const {event: {data: [from, to, amount]}} = event;
-    element.transfer = {
-        amount: amount.toString(),
-        from: from.toString(),
-        to: to.toString(),
-        fee: calculateFeeAsString(event.extrinsic),
-        eventIdx: event.idx,
-        success: true
-    }
-    await element.save();
+  await element.save();
 }
