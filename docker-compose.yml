@@ -25,7 +25,6 @@ services:
       - ./:/app
     command:
       - -f=/app
-      # - --local
       - --log-level=debug
 
   graphql-engine:
