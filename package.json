@@ -17,7 +17,8 @@
   "author": "Soramitsu",
   "license": "Apache-2.0",
   "dependencies": {
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.21",
+    "@interlay/interbtc-types": "latest"
   },
   "devDependencies": {
     "@polkadot/api": "^6",
