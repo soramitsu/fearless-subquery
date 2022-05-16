@@ -6,8 +6,8 @@ repository: https://github.com/soramitsu/fearless-subquery
 schema:
   file: ./schema.graphql
 network:
-  genesisHash: '0x89d3ec46d2fb43ef5a9713833373d5ea666b092fa8fd68fbc34596036571b907'
-  endpoint: wss://node.pol.equilibrium.io
+  genesisHash: '0xda5831fbc8570e3c6336d0d72b8c08f8738beefec812df21ef2afc2982ede09c'
+  endpoint: wss://rpc.litmus-parachain.litentry.io
 dataSources:
   - kind: substrate/Runtime
     startBlock: 1
