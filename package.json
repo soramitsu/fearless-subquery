@@ -24,6 +24,6 @@
     "@subql/cli": "latest",
     "@subql/types": "latest",
     "typescript": "4.3.2",
-    "@crustio/type-definitions": "latest"
+    "@equilab/definitions": "latest"
   }
 }
