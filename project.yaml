@@ -1,14 +1,15 @@
 specVersion: 0.2.0
-name: fearless
+name: fearless-oak
 version: 1.0.0
 description: Fearless SubQuery project
 repository: https://github.com/soramitsu/fearless-subquery
 schema:
   file: ./schema.graphql
 network:
-  genesisHash: '0xb0a8d493285c2df73290dfb7e61f870f17b41801197a149ca93654499ea3dafe'
-  endpoint: >-
-    wss://kusama.api.onfinality.io/ws?apikey=313214ec-15ef-4834-a896-1cf39911f94b
+  genesisHash: '0xd4c0c08ca49dc7c680c3dac71a7c0703e5b222f4b6c03fe4c5219bb8f22c18dc'
+  endpoint: wss://rpc-shadow.crust.network
+  chaintypes:
+    file: ./dist/chaintypes.js
 dataSources:
   - kind: substrate/Runtime
     startBlock: 1
@@ -17,36 +18,6 @@ dataSources:
       handlers:
         - handler: handleHistoryElement
           kind: substrate/CallHandler
-        - handler: handleReward
-          kind: substrate/EventHandler
-          filter:
-            module: staking
-            method: Reward
-        - handler: handleRewarded
-          kind: substrate/EventHandler
-          filter:
-            module: staking
-            method: Rewarded
-        - handler: handleSlash
-          kind: substrate/EventHandler
-          filter:
-            module: staking
-            method: Slash
-        - handler: handleSlashed
-          kind: substrate/EventHandler
-          filter:
-            module: staking
-            method: Slashed
-        - handler: handleBonded
-          kind: substrate/EventHandler
-          filter:
-            module: staking
-            method: Bonded
-        - handler: handleUnbonded
-          kind: substrate/EventHandler
-          filter:
-            module: staking
-            method: Unbonded
         - handler: handleTransfer
           kind: substrate/EventHandler
           filter:
@@ -57,13 +28,3 @@ dataSources:
           filter:
             module: balances
             method: transfer_keep_alive
-        - handler: handleNewEra
-          kind: substrate/EventHandler
-          filter:
-            module: staking
-            method: StakingElection
-        - handler: handleStakersElected
-          kind: substrate/EventHandler
-          filter:
-            module: staking
-            method: StakersElected
