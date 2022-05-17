@@ -16,14 +16,13 @@
   ],
   "author": "Soramitsu",
   "license": "Apache-2.0",
-  "dependencies": {
-    "lodash": "^4.17.21"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@polkadot/api": "^7",
-    "@subql/cli": "latest",
+    "@subql/cli": "0.29.0",
     "@subql/types": "latest",
     "typescript": "4.3.2",
-    "@equilab/definitions": "latest"
+    "@equilab/definitions": "latest",
+    "@subql/node": "0.35.2"
   }
 }
