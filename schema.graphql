@@ -27,6 +27,17 @@ type HistoryElement @entity {
   reward: String
 }
 
+type DelegatorsEvent @entity {
+  id: ID!
+  blockNumber: Int!
+  delegator: String! @index
+  collator: String @index
+  timestamp: BigInt!
+  type: Int!
+  round: Int!
+  amount: String!
+}
+
 type ErrorEvent @entity {
   id: ID!
   description: String!
