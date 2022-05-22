@@ -12,7 +12,7 @@ network:
     file: ./dist/chaintypes.js
 dataSources:
   - kind: substrate/Runtime
-    startBlock: 760887
+    startBlock: 1077663
     mapping:
       file: ./dist/index.js
       handlers:
@@ -31,30 +31,33 @@ dataSources:
             method: transfer_keep_alive
         # Delegation
         ## Stake
-        - handler: delegatorEventsHandler
+        - handler: stakingEventsHandler
           kind: substrate/EventHandler
           filter:
             module: parachainStaking
             method: Delegation
-        - handler: delegatorEventsHandler
+        - handler: stakingEventsHandler
           kind: substrate/EventHandler
           filter:
             module: parachainStaking
             method: DelegationIncreased
         ## Unstake
-        - handler: delegatorEventsHandler
+        - handler: stakingEventsHandler
           kind: substrate/EventHandler
           filter:
             module: parachainStaking
             method: DelegationDecreased
-        - handler: delegatorEventsHandler
+        - handler: stakingEventsHandler
           kind: substrate/EventHandler
           filter:
             module: parachainStaking
             method: DelegationRevoked
         ## Rewards
-        - handler: delegatorEventsHandler
+        - handler: stakingEventsHandler
           kind: substrate/EventHandler
           filter:
             module: parachainStaking
             method: Rewarded
+        # Common
+        # - handler: blockHandler
+        #   kind: substrate/BlockHandler
