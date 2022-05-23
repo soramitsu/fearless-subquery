@@ -25,7 +25,7 @@ services:
       - ./:/app
     command:
       - -f=/app
-      - --log-level=debug
+      # - --log-level=debug
 
   graphql-engine:
     image: onfinality/subql-query:latest
@@ -43,3 +43,4 @@ services:
     command:
       - --name=app
       - --playground
+      - --unsafe
