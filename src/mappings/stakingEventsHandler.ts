@@ -153,13 +153,23 @@ export async function handleNewRound(round: string): Promise<boolean> {
         // APR calculation
         const previousCollatorRound = await CollatorRound.get(collatorId.toString() + "-" + (parseInt(round) - 1));
         if (previousCollatorRound !== undefined) {
+            // collator stake share = collator’s stake / total stake
+            // amount_due = collator’s reward in last round / (0.2 + 0.5 * collator stake share)
+            // collator reward = (0.2*amount_due)+(0.5*amount_due*stake)
+            // annual collator reward = collator reward * 4 * 365
+            // APR for collator = annual collator reward / (total stake - delegators stake)
+
+            logger.debug(`Collator: ${collatorId}`);
             let collatorStakeShare = collatorRound.ownBond / collatorRound.totalBond
-            let amountDue = previousCollatorRound.ownBond / (0.2 + 0.5 * collatorStakeShare)
-            let delegatorsReward = amountDue * 0.5 * (collatorRound.totalBond - collatorRound.ownBond) / (collatorRound.totalBond)
-            // let annualDelegatorReward = delegatorsReward * 4 * 365
+            logger.debug(`Collator stake share: ${collatorStakeShare}`);
+            let amountDue = previousCollatorRound.rewardAmount / (0.2 + 0.5 * collatorRound.ownBond)
+            logger.debug(`Amount due: ${amountDue}`);
             let collatorReward = (0.2 * amountDue) + (0.5 * amountDue * collatorRound.ownBond)
+            logger.debug(`Collator reward: ${collatorReward}`);
             let annualCollatorReward = collatorReward * 4 * 365
-            collatorRound.apr = annualCollatorReward / collatorRound.ownBond * 100
+            logger.debug(`Annual collator reward: ${annualCollatorReward}`);
+            collatorRound.apr = annualCollatorReward / collatorRound.ownBond
+            logger.debug(`Collator APR: ${collatorRound.apr}`);
             logger.debug("Successfully calculated APR")
         }
         else {
