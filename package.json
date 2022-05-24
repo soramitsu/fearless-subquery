@@ -24,6 +24,12 @@
     "@subql/cli": "latest",
     "@subql/types": "latest",
     "typescript": "4.3.2",
-    "@acala-network/type-definitions": "latest"
+    "@subql/cli": "latest"
+  },
+  "exports": {
+    "chaintypes": "src/chaintypes.ts"
+  },
+  "resolutions": {
+    "ipfs-unixfs": "6.0.6"
   }
 }
