@@ -4,7 +4,7 @@
   "description": "This is an example of using 1-N relations",
   "main": "dist/index.js",
   "scripts": {
-    "build": "tsc -b",
+    "build": "subql build",
     "prepack": "rm -rf dist && npm build",
     "start:docker": "docker-compose pull && docker-compose up --remove-orphans",
     "codegen": "./node_modules/.bin/subql codegen"
@@ -18,11 +18,13 @@
   "license": "Apache-2.0",
   "dependencies": {},
   "devDependencies": {
-    "@polkadot/api": "^7",
-    "@subql/cli": "0.29.0",
+    "@polkadot/api": "^8",
+    "@subql/cli": "latest",
     "@subql/types": "latest",
     "typescript": "4.3.2",
-    "@equilab/definitions": "latest",
-    "@subql/node": "0.35.2"
+    "@equilab/definitions": "latest"
+  },
+  "exports": {
+    "chainTypes": "./src/chaintypes.ts"
   }
 }
