@@ -24,5 +24,11 @@
     "typescript": "4.3.2",
     "@equilab/definitions": "latest",
     "@subql/node": "0.35.2"
+  },
+  "exports": {
+    "chaintypes": "src/chaintypes.ts"
+  },
+  "resolutions": {
+    "ipfs-unixfs": "6.0.6"
   }
 }
