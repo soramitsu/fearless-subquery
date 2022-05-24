@@ -1,13 +1,22 @@
-specVersion: 0.2.0
-name: fearless-oak
+specVersion: 1.0.0
+name: fearless
 version: 1.0.0
+runner:
+  node:
+    name: '@subql/node'
+    version: '*'
+  query:
+    name: '@subql/query'
+    version: '*'
 description: Fearless SubQuery project
 repository: https://github.com/soramitsu/fearless-subquery
 schema:
   file: ./schema.graphql
 network:
-  genesisHash: '0x89d3ec46d2fb43ef5a9713833373d5ea666b092fa8fd68fbc34596036571b907'
+  chainId: '0x89d3ec46d2fb43ef5a9713833373d5ea666b092fa8fd68fbc34596036571b907'
   endpoint: wss://node.pol.equilibrium.io
+  # chaintypes:
+  #   file: ./dist/chainTypes.js
 dataSources:
   - kind: substrate/Runtime
     startBlock: 1
