@@ -1,8 +1,6 @@
 import { Collator, DelegatorHistoryElement, Delegation, Round, Delegator, CollatorRound } from '../types';
 import { SubstrateBlock, SubstrateEvent, SubstrateExtrinsic } from "@subql/types";
 import { blockNumber, eventId, calculateFeeAsString, timestamp } from "./common";
-import { u64 } from "@polkadot/types";
-
 enum eventTypes {
     Stake = 0,
     Unstake = 1,
@@ -156,7 +154,10 @@ async function handleNewRoundEntities(round: string): Promise<void> {
                     logger.debug(`Annual collator reward: ${annualCollatorReward}`);
                     collatorRound.apr = annualCollatorReward / collatorRound.ownBond
                     logger.debug(`Collator APR: ${collatorRound.apr}`);
-                    logger.debug("Successfully calculated APR")
+                    // Need the field for the corresponding aggregation based on formula [period] APR = ∑ ([Own bondn / Total bondn ] * APRn ) / ∑ [Own bondn / Total bondn ]
+                    collatorRound.aprTechnNumerator = collatorRound.ownBond / collatorRound.totalBond * collatorRound.apr
+                    collatorRound.aprTechnDenominator = collatorRound.ownBond / collatorRound.totalBond
+                    logger.debug(`Calculated technical APR fields`)
                 }
                 else {
                     logger.debug("No data for previous round. Cannot calculate APR for the current one")

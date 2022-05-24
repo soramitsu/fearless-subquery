@@ -72,4 +72,6 @@ type CollatorRound @entity {
   totalBond: Float!
   rewardAmount: Float
   apr: Float
+  aprTechnNumerator: Float
+  aprTechnDenominator: Float 
 }
