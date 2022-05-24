@@ -24,5 +24,11 @@
     "@subql/cli": "latest",
     "@subql/types": "latest",
     "typescript": "4.3.2"
+  },
+  "exports": {
+    "chaintypes": "src/chaintypes.ts"
+  },
+  "resolutions": {
+    "ipfs-unixfs": "6.0.6"
   }
 }
