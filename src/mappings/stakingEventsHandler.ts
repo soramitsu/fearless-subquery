@@ -10,10 +10,6 @@ enum eventTypes {
     Delegate = 3
 };
 
-async function getRound(): Promise<string> {
-    return (await api.query.parachainStaking.round())["current"].toString();
-};
-
 let delegatorRoundList = new Array<string>();
 let collatorRoundList = new Array<string>();
 
@@ -111,84 +107,95 @@ export async function populateDB(event: SubstrateEvent, round: Round): Promise<v
     logger.debug(`Successfully handled an event. Saved ${records.length} records`);
 }
 
+async function handleNewRoundEntities(round: string): Promise<void> {
+    delegatorRoundList = [];
+    collatorRoundList = [];
+    logger.debug("Cleared delegator and colators lists");
+    const handleCandidateInfo = async () => {
+        let candidateInfo = await api.query.parachainStaking.candidateInfo.entries();
+        logger.debug("Got candidate info")
+        let candidateInfoCollatorList = Array<string>();
+        candidateInfo.forEach(async ([{ args: [collatorId] }, data]) => {
+            const handleCollator = async () => {
+                let collator = await Collator.get(collatorId.toString());
+                candidateInfoCollatorList.push(collatorId.toString());
+                if (collator === undefined) {
+                    logger.debug(`Collator not found, creating new collator`);
+                    collator = new Collator(collatorId.toString());
+                }
+                await collator.save();
+            }
+            const handleCollatorRound = async (round: string) => {
+                let collatorRound = new CollatorRound(collatorId.toString() + "-" + round);
+                logger.debug("Created collator round")
+                collatorRound.ownBond = parseFloat(data.toHuman()['bond'].toString().replace(/,/g, ''));
+                collatorRound.totalBond = parseFloat(data.toHuman()['totalCounted'].toString().replace(/,/g, ''));
 
-export async function stakingEventsHandler(event: SubstrateEvent): Promise<void> {
-    let currentRound = await getRound();
+                logger.debug(`collatorRound.ownBond / collatorRound.totalBond =  ${collatorRound.totalBond / collatorRound.ownBond}`);
+
+                collatorRound.collatorId = collatorId.toString();
+                collatorRound.roundId = round;
+
+                // APR calculation
+                const previousCollatorRound = await CollatorRound.get(collatorId.toString() + "-" + (parseInt(round) - 1));
+                if (previousCollatorRound !== undefined) {
+                    // collator stake share = collator’s stake / total stake
+                    // amount_due = collator’s reward in last round / (0.2 + 0.5 * collator stake share)
+                    // collator reward = (0.2*amount_due)+(0.5*amount_due*stake)
+                    // annual collator reward = collator reward * 4 * 365
+                    // APR for collator = annual collator reward / (total stake - delegators stake)
+
+                    logger.debug(`Collator: ${collatorId}`);
+                    let collatorStakeShare = collatorRound.ownBond / collatorRound.totalBond
+                    logger.debug(`Collator stake share: ${collatorStakeShare}`);
+                    let amountDue = previousCollatorRound.rewardAmount / (0.2 + 0.5 * collatorRound.ownBond)
+                    logger.debug(`Amount due: ${amountDue}`);
+                    let collatorReward = (0.2 * amountDue) + (0.5 * amountDue * collatorRound.ownBond)
+                    logger.debug(`Collator reward: ${collatorReward}`);
+                    let annualCollatorReward = collatorReward * 4 * 365
+                    logger.debug(`Annual collator reward: ${annualCollatorReward}`);
+                    collatorRound.apr = annualCollatorReward / collatorRound.ownBond
+                    logger.debug(`Collator APR: ${collatorRound.apr}`);
+                    logger.debug("Successfully calculated APR")
+                }
+                else {
+                    logger.debug("No data for previous round. Cannot calculate APR for the current one")
+                }
+                await collatorRound.save();
+            }
+            await Promise.all([handleCollator(), handleCollatorRound(round)]);
+        });
+    }
+    const handleAtStake = async () => {
+        let atStake = await api.query.parachainStaking.atStake.entries(round)
+        logger.debug("Got atStake")
+        atStake.forEach(([{ args: [, collatorId] }, data]) => {
+            collatorRoundList.push(collatorId.toString());
+            let collatorDelegatorList: Array<string> = data['delegations'].map(object => object["owner"].toString());
+            logger.debug("Got collator delegations")
+            collatorDelegatorList.forEach(delegatorId => {
+                delegatorRoundList.push(delegatorId.toString());
+            });
+        });
+    }
+
+    await Promise.all([handleCandidateInfo(), handleAtStake()]);
+};
+
+async function handleRound(): Promise<Round> {
+    let currentRound = (await api.query.parachainStaking.round())["current"].toString();
     let round = await Round.get(currentRound);
     if (round === undefined) {
         round = new Round(currentRound);
         logger.debug(`Round not found, creating new round: ${round.id}`);
         await round.save();
-        await handleNewRound(round.id).then(_ => populateDB(event, round));
+        await handleNewRoundEntities(round.id);
     }
-    populateDB(event, round);
+    return round;
+}
+
+export async function stakingEventsHandler(event: SubstrateEvent): Promise<void> {
+    const round = await handleRound();
+    await populateDB(event, round);
 };
 
-export async function handleNewRound(round: string): Promise<boolean> {
-    logger.debug(`Handling new round: ${round}`);
-    delegatorRoundList = [];
-    collatorRoundList = [];
-    logger.debug("Cleared delegator and colators lists");
-    let candidateInfo = await api.query.parachainStaking.candidateInfo.entries();
-    logger.debug("Got candidate info")
-    let candidateInfoCollatorList = Array<string>();
-    candidateInfo.forEach(async ([{ args: [collatorId] }, data]) => {
-        let collator = await Collator.get(collatorId.toString());
-        candidateInfoCollatorList.push(collatorId.toString());
-        if (collator === undefined) {
-            logger.debug(`Collator not found, creating new collator`);
-            collator = new Collator(collatorId.toString());
-        }
-        await collator.save();
-        let collatorRound = new CollatorRound(collatorId.toString() + "-" + round);
-        logger.debug("Created collator round")
-        collatorRound.ownBond = parseFloat(data.toHuman()['bond'].toString().replace(/,/g, ''));
-        collatorRound.totalBond = parseFloat(data.toHuman()['totalCounted'].toString().replace(/,/g, ''));
-
-        logger.debug(`collatorRound.ownBond / collatorRound.totalBond =  ${collatorRound.totalBond / collatorRound.ownBond}`);
-
-        collatorRound.collatorId = collatorId.toString();
-        collatorRound.roundId = round;
-
-        // APR calculation
-        const previousCollatorRound = await CollatorRound.get(collatorId.toString() + "-" + (parseInt(round) - 1));
-        if (previousCollatorRound !== undefined) {
-            // collator stake share = collator’s stake / total stake
-            // amount_due = collator’s reward in last round / (0.2 + 0.5 * collator stake share)
-            // collator reward = (0.2*amount_due)+(0.5*amount_due*stake)
-            // annual collator reward = collator reward * 4 * 365
-            // APR for collator = annual collator reward / (total stake - delegators stake)
-
-            logger.debug(`Collator: ${collatorId}`);
-            let collatorStakeShare = collatorRound.ownBond / collatorRound.totalBond
-            logger.debug(`Collator stake share: ${collatorStakeShare}`);
-            let amountDue = previousCollatorRound.rewardAmount / (0.2 + 0.5 * collatorRound.ownBond)
-            logger.debug(`Amount due: ${amountDue}`);
-            let collatorReward = (0.2 * amountDue) + (0.5 * amountDue * collatorRound.ownBond)
-            logger.debug(`Collator reward: ${collatorReward}`);
-            let annualCollatorReward = collatorReward * 4 * 365
-            logger.debug(`Annual collator reward: ${annualCollatorReward}`);
-            collatorRound.apr = annualCollatorReward / collatorRound.ownBond
-            logger.debug(`Collator APR: ${collatorRound.apr}`);
-            logger.debug("Successfully calculated APR")
-        }
-        else {
-            logger.debug("No data for previous round. Cannot calculate APR for the current one")
-        }
-
-        await collatorRound.save();
-    });
-    logger.debug(`Totally ${candidateInfoCollatorList.length} returned from candidateInfo query`)
-    let atStake = await api.query.parachainStaking.atStake.entries(round)
-    logger.debug("Got atStake")
-    atStake.forEach(([{ args: [, collatorId] }, data]) => {
-        collatorRoundList.push(collatorId.toString());
-        let collatorDelegatorList: Array<string> = data['delegations'].map(object => object["owner"].toString());
-        logger.debug("Got collator delegations")
-        collatorDelegatorList.forEach(delegatorId => {
-            delegatorRoundList.push(delegatorId.toString());
-        });
-    });
-    logger.debug(`Totally ${collatorRoundList.length} returned from atStake query`)
-    return true;
-};
