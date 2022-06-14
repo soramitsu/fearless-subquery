@@ -1,3 +1,3 @@
-import { typesBundle } from "moonbeam-types-bundle";
+import { typesBundlePre900 } from 'moonbeam-types-bundle';
 
-export default { typesBundle };
+export default { typesBundle: typesBundlePre900 };
