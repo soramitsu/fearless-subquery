@@ -1,7 +1,7 @@
 {
   "name": "fearless",
   "version": "1.0.0",
-  "description": "This is an example of using 1-N relations",
+  "description": "Fearless Subquery project",
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc -b",
@@ -17,10 +17,16 @@
   "author": "Soramitsu",
   "license": "Apache-2.0",
   "devDependencies": {
-    "@polkadot/api": "^7",
-    "@subql/cli": "latest",
     "@subql/types": "latest",
-    "moonbeam-types-bundle": "^1",
-    "typescript": "4.3.2"
+    "@polkadot/api": "^6",
+    "moonbeam-types-bundle": "^2.0.3",
+    "typescript": "4.3.2",
+    "@subql/cli": "latest"
+  },
+  "exports": {
+    "chaintypes": "src/chaintypes.ts"
+  },
+  "resolutions": {
+    "ipfs-unixfs": "6.0.6"
   }
 }
