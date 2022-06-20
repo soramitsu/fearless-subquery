@@ -20,7 +20,7 @@ function createAndPartlyPopulateDelegatorHistoryElement(event: SubstrateEvent, r
 }
 
 export async function populateDB(event: SubstrateEvent, round: Round): Promise<void> {
-    logger.debug(`Handling a deletor event: ${event.idx}`);
+    logger.debug(`Handling a delegator event: ${event.idx}`);
     let records: (Delegation | DelegatorHistoryElement | CollatorRound)[] = [];
     let record: DelegatorHistoryElement;
     logger.debug(`Handling ${event.event.method} event`);
@@ -94,7 +94,7 @@ export async function populateDB(event: SubstrateEvent, round: Round): Promise<v
     if (record != undefined) {
         let delegator = await Delegator.get(record.delegatorId);
         if (delegator === undefined) {
-            logger.debug(`Delegator not found, creating new delegator`);
+            logger.debug(`Delegator ${record.delegatorId} not found in DB, creating new one`);
             delegator = new Delegator(record.delegatorId);
             await delegator.save();
         }
@@ -111,21 +111,21 @@ async function handleNewRoundEntities(round: string): Promise<void> {
     logger.debug("Cleared delegator and colators lists");
     const handleCandidateInfo = async () => {
         let candidateInfo = await api.query.parachainStaking.candidateInfo.entries();
-        logger.debug("Got candidate info")
+        logger.debug(`Got candidate info for round ${round}`)
         let candidateInfoCollatorList = Array<string>();
         candidateInfo.forEach(async ([{ args: [collatorId] }, data]) => {
             const handleCollator = async () => {
                 let collator = await Collator.get(collatorId.toString());
                 candidateInfoCollatorList.push(collatorId.toString());
                 if (collator === undefined) {
-                    logger.debug(`Collator not found, creating new collator`);
+                    logger.debug(`Collator ${collatorId} not found in DB, creating new collator`);
                     collator = new Collator(collatorId.toString());
                 }
                 await collator.save();
             }
             const handleCollatorRound = async (round: string) => {
                 let collatorRound = new CollatorRound(collatorId.toString() + "-" + round);
-                logger.debug("Created collator round")
+                logger.debug(`Created collator-round entity. Collator: ${collatorId.toString()} Round: ${round}`);
                 collatorRound.ownBond = parseFloat(data.toHuman()['bond'].toString().replace(/,/g, ''));
                 collatorRound.totalBond = parseFloat(data.toHuman()['totalCounted'].toString().replace(/,/g, ''));
 
@@ -160,27 +160,32 @@ async function handleNewRoundEntities(round: string): Promise<void> {
                     logger.debug(`Calculated technical APR fields`)
                 }
                 else {
-                    logger.debug("No data for previous round. Cannot calculate APR for the current one")
+                    logger.debug(`No data for previous round (Collator: ${collatorId.toString()} Round: ${round}) => Cannot calculate APR for the current one`)
                 }
                 await collatorRound.save();
             }
             await Promise.all([handleCollator(), handleCollatorRound(round)]);
+            // logger.debug(`🚩 handleCollator and handleCollatorRound finished`);
         });
     }
+    await handleCandidateInfo();
+    logger.debug(`🚩 handleCandidateInfo finished`);
     const handleAtStake = async () => {
         let atStake = await api.query.parachainStaking.atStake.entries(round)
-        logger.debug("Got atStake")
         atStake.forEach(([{ args: [, collatorId] }, data]) => {
             collatorRoundList.push(collatorId.toString());
             let collatorDelegatorList: Array<string> = data['delegations'].map(object => object["owner"].toString());
-            logger.debug("Got collator delegations")
+            logger.debug(`Got delegations of collator ${collatorId.toString()}`);
             collatorDelegatorList.forEach(delegatorId => {
                 delegatorRoundList.push(delegatorId.toString());
             });
         });
     }
-
-    await Promise.all([handleCandidateInfo(), handleAtStake()]);
+    await handleAtStake();
+    // await Promise.all([handleCandidateInfo(), handleAtStake()]);
+    // logger.debug(`🚩 handleCandidateInfo and handleAtStake finished`);
+    logger.debug(`🚩 handleAtStake finished`);
+    logger.debug(`🚩 handleCandidateInfo and handleAtStake finished`);
 };
 
 async function handleRound(): Promise<Round> {
@@ -191,6 +196,10 @@ async function handleRound(): Promise<Round> {
         logger.debug(`Round not found, creating new round: ${round.id}`);
         await round.save();
         await handleNewRoundEntities(round.id);
+        logger.debug(`🏁 Saved all entities for round: ${round.id}`);
+    }
+    else {
+        logger.debug("Round already exists, skipping entities creation");
     }
     return round;
 }
