@@ -68,8 +68,8 @@ type CollatorRound @entity {
   id: ID!
   round: Round!
   collator: Collator!
-  ownBond: Float!
-  totalBond: Float!
+  ownBond: Float
+  totalBond: Float
   rewardAmount: Float
   apr: Float
   aprTechnNumerator: Float
