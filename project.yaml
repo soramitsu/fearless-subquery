@@ -7,7 +7,7 @@ runner:
     version: 1.2.1
   query:
     name: '@subql/query'
-    version: latest
+    version: 1.2.0
 description: Fearless SubQuery project
 repository: 'https://github.com/soramitsu/fearless-subquery'
 schema:
