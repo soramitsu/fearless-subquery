@@ -1,13 +1,20 @@
-specVersion: 0.2.0
-name: fearless-moonbase-alpha
+specVersion: 1.0.0
+name: fearless-wallet-moonbase_alpha
 version: 1.0.0
+runner:
+  node:
+    name: '@subql/node'
+    version: 1.2.1
+  query:
+    name: '@subql/query'
+    version: 1.2.0
 description: Fearless SubQuery project
-repository: https://github.com/soramitsu/fearless-subquery
+repository: 'https://github.com/soramitsu/fearless-subquery'
 schema:
   file: ./schema.graphql
 network:
-  genesisHash: '0x91bc6e169807aaa54802737e1c504b2577d4fafedd5a02c10293b1cd60e39527'
-  endpoint: wss://moonbeam-alpha.api.onfinality.io/public-ws
+  chainId: '0x91bc6e169807aaa54802737e1c504b2577d4fafedd5a02c10293b1cd60e39527'
+  endpoint: 'wss://moonbeam-alpha.api.onfinality.io/public-ws'
   chaintypes:
     file: ./dist/chaintypes.js
 dataSources:
@@ -16,7 +23,6 @@ dataSources:
     mapping:
       file: ./dist/index.js
       handlers:
-        # Transfers
         - handler: handleHistoryElement
           kind: substrate/CallHandler
         - handler: handleTransfer
@@ -29,8 +35,6 @@ dataSources:
           filter:
             module: balances
             method: transfer_keep_alive
-        # Delegation
-        ## Stake
         - handler: stakingEventsHandler
           kind: substrate/EventHandler
           filter:
@@ -41,7 +45,6 @@ dataSources:
           filter:
             module: parachainStaking
             method: DelegationIncreased
-        ## Unstake
         - handler: stakingEventsHandler
           kind: substrate/EventHandler
           filter:
@@ -52,12 +55,8 @@ dataSources:
           filter:
             module: parachainStaking
             method: DelegationRevoked
-        ## Rewards
         - handler: stakingEventsHandler
           kind: substrate/EventHandler
           filter:
             module: parachainStaking
             method: Rewarded
-        # Common
-        # - handler: blockHandler
-        #   kind: substrate/BlockHandler
