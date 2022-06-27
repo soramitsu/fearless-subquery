@@ -17,6 +17,7 @@ network:
   endpoint: 'wss://wss.api.moonbeam.network'
   chaintypes:
     file: ./dist/chaintypes.js
+  dictionary: https://api.subquery.network/sq/subquery/moonbeam-dictionary
 dataSources:
   - kind: substrate/Runtime
     startBlock: 500000
