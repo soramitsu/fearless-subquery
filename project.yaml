@@ -20,7 +20,7 @@ network:
   dictionary: https://api.subquery.network/sq/subquery/moonbeam-dictionary
 dataSources:
   - kind: substrate/Runtime
-    startBlock: 500000
+    startBlock: 1200000
     mapping:
       file: ./dist/index.js
       handlers:
