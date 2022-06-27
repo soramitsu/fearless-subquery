@@ -65,38 +65,39 @@ async function calculateAPRForPreviousRound(collatorRoundDelayed: CollatorRound,
 
     const previousCollatorRound = await CollatorRound.get(collator.id.toString() + "-" + (parseInt(round.id) - 1).toString());
 
-    // collator stake share = collator’s stake / total stake
-    // amount_due = collator’s reward in last round / (0.2 + 0.5 * collator stake share)
-    // collator reward = (0.2*amount_due)+(0.5*amount_due*stake)
-    // annual collator reward = collator reward * 4 * 365
-    // APR for collator = annual collator reward / (total stake - delegators stake)
+    if (previousCollatorRound !== undefined) {
+        // collator stake share = collator’s stake / total stake
+        // amount_due = collator’s reward in last round / (0.2 + 0.5 * collator stake share)
+        // collator reward = (0.2*amount_due)+(0.5*amount_due*stake)
+        // annual collator reward = collator reward * 4 * 365
+        // APR for collator = annual collator reward / (total stake - delegators stake)
 
-    logger.debug(`Got previous round ${previousCollatorRound.id}`)
-    logger.debug(`Collator: ${collator.id}`);
-    // logger.debug(`Previous round rewardAmount: ${previousCollatorRound.rewardAmount.toString()}`);
-    logger.debug(`Own bond: ${previousCollatorRound.ownBond}`);
-    let collatorStakeShare = previousCollatorRound.ownBond / previousCollatorRound.totalBond
-    logger.debug(`Collator stake share: ${collatorStakeShare}`);
-    let amountDue = collatorRoundDelayed.rewardAmount / (0.2 + 0.5 * previousCollatorRound.ownBond)
-    logger.debug(`Amount due: ${amountDue}`);
-    let collatorReward = (0.2 * amountDue) + (0.5 * amountDue * previousCollatorRound.ownBond)
-    logger.debug(`Collator reward: ${collatorReward}`);
-    let annualCollatorReward = collatorReward * 4 * 365
-    logger.debug(`Annual collator reward: ${annualCollatorReward}`);
-    previousCollatorRound.apr = annualCollatorReward / previousCollatorRound.ownBond
-    logger.debug(`Collator APR: ${previousCollatorRound.apr}`);
-    // Need the field for the corresponding aggregation based on formula [period] APR = ∑ ([Own bondn / Total bondn ] * APRn ) / ∑ [Own bondn / Total bondn ]
-    previousCollatorRound.aprTechnNumerator = previousCollatorRound.ownBond / previousCollatorRound.totalBond * previousCollatorRound.apr
-    previousCollatorRound.aprTechnDenominator = previousCollatorRound.ownBond / previousCollatorRound.totalBond
-    logger.debug(`Calculated technical APR fields`)
+        logger.debug(`Got previous round ${previousCollatorRound.id}`)
+        logger.debug(`Collator: ${collator.id}`);
+        // logger.debug(`Previous round rewardAmount: ${previousCollatorRound.rewardAmount.toString()}`);
+        logger.debug(`Own bond: ${previousCollatorRound.ownBond}`);
+        let collatorStakeShare = previousCollatorRound.ownBond / previousCollatorRound.totalBond
+        logger.debug(`Collator stake share: ${collatorStakeShare}`);
+        let amountDue = collatorRoundDelayed.rewardAmount / (0.2 + 0.5 * previousCollatorRound.ownBond)
+        logger.debug(`Amount due: ${amountDue}`);
+        let collatorReward = (0.2 * amountDue) + (0.5 * amountDue * previousCollatorRound.ownBond)
+        logger.debug(`Collator reward: ${collatorReward}`);
+        let annualCollatorReward = collatorReward * 4 * 365
+        logger.debug(`Annual collator reward: ${annualCollatorReward}`);
+        previousCollatorRound.apr = annualCollatorReward / previousCollatorRound.ownBond
+        logger.debug(`Collator APR: ${previousCollatorRound.apr}`);
+        // Need the field for the corresponding aggregation based on formula [period] APR = ∑ ([Own bondn / Total bondn ] * APRn ) / ∑ [Own bondn / Total bondn ]
+        previousCollatorRound.aprTechnNumerator = previousCollatorRound.ownBond / previousCollatorRound.totalBond * previousCollatorRound.apr
+        previousCollatorRound.aprTechnDenominator = previousCollatorRound.ownBond / previousCollatorRound.totalBond
+        logger.debug(`Calculated technical APR fields`)
 
-    await previousCollatorRound.save()
+        await previousCollatorRound.save()
+    }
 
-    // if (previousCollatorRound !== undefined && previousCollatorRound.rewardAmount !== null) {
-    // }
-    // else {
-    //     logger.debug(`No data for previous round (Collator: ${collatorId.toString()} Round: ${round}) => Cannot calculate APR for the current one`)
-    // }
+    else {
+        logger.debug("Previous round not found")
+    }
+
 }
 
 export async function populateDB(event: SubstrateEvent, round: Round): Promise<void> {
