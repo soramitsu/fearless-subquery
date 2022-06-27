@@ -17,6 +17,7 @@ network:
   endpoint: 'wss://moonbeam-alpha.api.onfinality.io/public-ws'
   chaintypes:
     file: ./dist/chaintypes.js
+  dictionary: https://api.subquery.network/sq/subquery/moonbase-alpha-dictionary
 dataSources:
   - kind: substrate/Runtime
     startBlock: 2000000
