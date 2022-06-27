@@ -1,32 +1,3 @@
-type Transfer @jsonField {
-  amount: String!
-  to: String!
-  from: String!
-  fee: String!
-  eventIdx: Int!
-  success: Boolean!
-}
-
-type Extrinsic @jsonField {
-  hash: String!
-  module: String!
-  call: String!
-  fee: String!
-  success: Boolean!
-}
-
-type HistoryElement @entity {
-  id: ID!
-  blockNumber: Int!
-  extrinsicIdx: Int,
-  extrinsicHash: String
-  timestamp: BigInt! @index
-  address: String! @index
-  extrinsic: Extrinsic
-  transfer: Transfer
-  reward: String
-}
-
 type Delegator @entity {
   id: ID!
   # historyElements: [DelegatorHistoryElement]! @derivedFrom(field: "delegator")

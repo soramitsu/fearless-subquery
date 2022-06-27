@@ -20,22 +20,10 @@ network:
   dictionary: https://api.subquery.network/sq/subquery/moonbeam-dictionary
 dataSources:
   - kind: substrate/Runtime
-    startBlock: 500000
+    startBlock: 1200000
     mapping:
       file: ./dist/index.js
       handlers:
-        - handler: handleHistoryElement
-          kind: substrate/CallHandler
-        - handler: handleTransfer
-          kind: substrate/EventHandler
-          filter:
-            module: balances
-            method: Transfer
-        - handler: handleTransferKeepAlive
-          kind: substrate/EventHandler
-          filter:
-            module: balances
-            method: transfer_keep_alive
         - handler: stakingEventsHandler
           kind: substrate/EventHandler
           filter:

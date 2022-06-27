@@ -1,6 +1,6 @@
 import { Collator, DelegatorHistoryElement, Delegation, Round, Delegator, CollatorRound } from '../types';
 import { SubstrateBlock, SubstrateEvent, SubstrateExtrinsic } from "@subql/types";
-import { blockNumber, eventId, calculateFeeAsString, timestamp } from "./common";
+import { blockNumber, eventId, timestamp } from "./common";
 enum eventTypes {
     Stake = 0,
     Unstake = 1,
