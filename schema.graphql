@@ -1,33 +1,48 @@
-type Transfer @jsonField {
-  amount: String!
-  to: String!
-  from: String!
-  fee: String!
-  eventIdx: Int!
-  success: Boolean!
+type Delegator @entity {
+  id: ID!
+  # historyElements: [DelegatorHistoryElement]! @derivedFrom(field: "delegator")
+  # delegations: [Delegation] @derivedFrom(field: "delegator")
 }
 
-type Extrinsic @jsonField {
-  hash: String!
-  module: String!
-  call: String!
-  fee: String!
-  success: Boolean!
+type Collator @entity {
+  id: ID!
 }
 
-type HistoryElement @entity {
+type DelegatorHistoryElement @entity {
   id: ID!
   blockNumber: Int!
-  extrinsicIdx: Int,
-  extrinsicHash: String
-  timestamp: BigInt! @index
-  address: String! @index
-  extrinsic: Extrinsic
-  transfer: Transfer
-  reward: String
+  delegator: Delegator!
+  collator: Collator
+  timestamp: BigInt!
+  type: Int!
+  round: Round!
+  amount: Float!
+}
+
+type Delegation @entity {
+  id: ID!
+  delegator: Delegator!
+  round: Round!
+  collator: Collator!
+}
+
+type Round @entity {
+  id: ID!
 }
 
 type ErrorEvent @entity {
   id: ID!
   description: String!
+}
+
+type CollatorRound @entity {
+  id: ID!
+  round: Round!
+  collator: Collator!
+  ownBond: Float
+  totalBond: Float
+  rewardAmount: Float
+  apr: Float
+  aprTechnNumerator: Float
+  aprTechnDenominator: Float 
 }
