@@ -1,5 +1,5 @@
 specVersion: 1.0.0
-name: fearless-wallet-moonbeam
+name: fearless-wallet-x-moonriver-staking
 version: 1.0.0
 runner:
   node:
@@ -20,7 +20,7 @@ network:
   dictionary: https://api.subquery.network/sq/subquery/moonriver-dictionary
 dataSources:
   - kind: substrate/Runtime
-    startBlock: 2000000
+    startBlock: 1000000
     mapping:
       file: ./dist/index.js
       handlers:
