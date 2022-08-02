@@ -157,7 +157,7 @@ export async function populateDB(event: SubstrateEvent, round: Round): Promise<v
                 logger.debug(`Rewarded event is emitted to delegator: ${account.toString()}`);
                 record = createAndPartlyPopulateDelegatorHistoryElement(event, round);
                 record.delegatorId = account.toString()
-                record.type = eventTypes.Stake
+                record.type = eventTypes.Reward
                 record.amount = parseFloat(amount.toString());
             }
             else if (collatorRoundList.find(element => element == account.toString())) {
