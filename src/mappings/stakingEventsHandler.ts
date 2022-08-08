@@ -103,9 +103,9 @@ async function calculateAPRFor24h(collatorRoundDelayed: CollatorRound, collator:
     // As Rewarded event is being emmited after 2 rounds have passed, APR could be calculated for a previous round
     logger.debug(`Calculating APR for previous 24h`);
 
-    const previousCollatorRound = await types_1.CollatorRound.get(collator.id.toString().toLowerCase() + "-" + (parseInt(round.id) - 1).toString());
-    const firstCollatorRoundDay = await types_1.CollatorRound.get(collator.id.toString().toLowerCase() + "-" + (parseInt(round.id) - 4).toString());
-
+    const previousCollatorRound = await CollatorRound.get(collator.id.toString().toLowerCase() + "-" + (parseInt(round.id) - 1).toString());
+    const firstCollatorRoundDay = await CollatorRound.get(collator.id.toString().toLowerCase() + "-" + (parseInt(round.id) - 4).toString());
+    const updated24hApr = 0
     logger.debug(`Collator first round: ${firstCollatorRoundDay}`);
     logger.debug(`Collator last round: ${previousCollatorRound}`);
 
