@@ -200,7 +200,7 @@ export async function populateDB(event: SubstrateEvent, round: Round): Promise<v
                 await collatorRoundDelayed.save();
                 logger.debug(`Saved rewardAmount for delayed round ${collatorRoundDelayed.id}`);
                 await calculateAPRForPreviousRound(collatorRoundDelayed, collator, round)
-                await calculateAPRFor24h(collatorRoundDelayed, collator, round)
+                //await calculateAPRFor24h(collatorRoundDelayed, collator, round)
             }
             else {
                 logger.debug("Delegator/Collator not found in map")
