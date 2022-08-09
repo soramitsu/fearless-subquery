@@ -30,7 +30,7 @@ async function checkIfCollatorExistsOtherwiseCreate(collatorId: string): Promise
     if (collator === undefined) {
         logger.debug(`Collator ${collatorId.toString().toLowerCase()} not found in DB, creating new collator`);
         collator = new Collator(collatorId.toString());
-        logger.debug('Collator created')
+        logger.debug(`Collator created`)
     }
     await collator.save();
     // logger.debug(`Collator ${collatorId} saved to DB`);
@@ -142,7 +142,7 @@ export async function populateDB(event: SubstrateEvent, round: Round): Promise<v
             record.amount = parseFloat(amount.toString());
             record.collatorId = collator.toString().toLowerCase();
             logger.debug(`Collator exist ${record.collatorId} check`)
-            await checkIfCollatorExistsOtherwiseCreate(record.collatorId.toLowerCase());
+            await checkIfCollatorExistsOtherwiseCreate(record.collatorId.toString().toLowerCase());
 
             const delegation = new Delegation(eventId(event))
             delegation.roundId = round.id;
