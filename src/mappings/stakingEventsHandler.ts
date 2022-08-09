@@ -29,7 +29,7 @@ async function checkIfCollatorExistsOtherwiseCreate(collatorId: string): Promise
     let collator = await Collator.get(collatorId.toString().toLowerCase());
     if (collator === undefined) {
         logger.debug(`Collator ${collatorId.toString().toLowerCase()} not found in DB, creating new collator`);
-        collator = new Collator(collatorId.toString());
+        collator = new Collator(collatorId.toString().toLowerCase());
         logger.debug(`Collator created`)
     }
     await collator.save();
@@ -38,11 +38,11 @@ async function checkIfCollatorExistsOtherwiseCreate(collatorId: string): Promise
 }
 
 async function checkIfCollatorRoundExistsOtherwiseCreate(collatorId: string, round: Round): Promise<CollatorRound> {
-    let collatorRound = await CollatorRound.get(collatorId + "-" + round.id);
+    let collatorRound = await CollatorRound.get(collatorId.toString().toLowerCase() + "-" + round.id);
     if (collatorRound === undefined) {
-        logger.debug(`CollatorRound ${collatorId} not found in DB, creating new collatorRound`);
-        collatorRound = new CollatorRound(collatorId + "-" + round.id);
-        collatorRound.collatorId = collatorId
+        logger.debug(`CollatorRound ${collatorId.toString().toLowerCase()} not found in DB, creating new collatorRound`);
+        collatorRound = new CollatorRound(collatorId.toString().toLowerCase() + "-" + round.id);
+        collatorRound.collatorId = collatorId.toString().toLowerCase()
         collatorRound.roundId = round.id
     }
     await collatorRound.save();
