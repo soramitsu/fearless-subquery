@@ -28,9 +28,8 @@ function createAndPartlyPopulateDelegatorHistoryElement(event: SubstrateEvent, r
 async function checkIfCollatorExistsOtherwiseCreate(collatorId: string): Promise<Collator> {
     let collator = await Collator.get(collatorId.toString());
     if (collator === undefined) {
-        logger.debug(`Collator ${collatorId.toString()} not found in DB, creating new collator`);
+        logger.debug(`Collator ${collatorId} not found in DB, creating new collator`);
         collator = new Collator(collatorId.toString());
-        logger.debug(`Collator created`)
     }
     await collator.save();
     // logger.debug(`Collator ${collatorId} saved to DB`);
@@ -38,11 +37,11 @@ async function checkIfCollatorExistsOtherwiseCreate(collatorId: string): Promise
 }
 
 async function checkIfCollatorRoundExistsOtherwiseCreate(collatorId: string, round: Round): Promise<CollatorRound> {
-    let collatorRound = await CollatorRound.get(collatorId.toString() + "-" + round.id);
+    let collatorRound = await CollatorRound.get(collatorId + "-" + round.id);
     if (collatorRound === undefined) {
-        logger.debug(`CollatorRound ${collatorId.toString()} not found in DB, creating new collatorRound`);
-        collatorRound = new CollatorRound(collatorId.toString() + "-" + round.id);
-        collatorRound.collatorId = collatorId.toString()
+        logger.debug(`CollatorRound ${collatorId} not found in DB, creating new collatorRound`);
+        collatorRound = new CollatorRound(collatorId + "-" + round.id);
+        collatorRound.collatorId = collatorId
         collatorRound.roundId = round.id
     }
     await collatorRound.save();
@@ -60,7 +59,7 @@ async function checkIfRoundExistsOtherwiseCreate(roundId: string): Promise<Round
 }
 
 async function calculateAPRForPreviousRound(collatorRoundDelayed: CollatorRound, collator: Collator, round: Round): Promise<void> {
-    // As Rewarded event is being emmited after 2 rounds have passed, APR could be calculated for a previous round 
+    // As Rewarded event is being emmited after 2 rounds have passed, APR could be calculated for a previous round
 
     logger.debug(`Calculating APR for previous round`);
 
@@ -100,34 +99,6 @@ async function calculateAPRForPreviousRound(collatorRoundDelayed: CollatorRound,
     // }
 }
 
-async function calculateAPRFor24h(collatorRoundDelayed: CollatorRound, collator: Collator, round: Round) {
-    // As Rewarded event is being emmited after 2 rounds have passed, APR could be calculated for a previous round
-    logger.debug(`Calculating APR for previous 24h`);
-
-    const previousCollatorRound = await CollatorRound.get(collator.id.toString() + "-" + (parseInt(round.id) - 1).toString());
-    const firstCollatorRoundDay = await CollatorRound.get(collator.id.toString() + "-" + (parseInt(round.id) - 4).toString());
-    const updated24hApr = 0
-    logger.debug(`Collator first round: ${firstCollatorRoundDay}`);
-    logger.debug(`Collator last round: ${previousCollatorRound}`);
-
-    let last24hApr = 0
-    if (firstCollatorRoundDay !== undefined) {
-        if (collator.apr24h !== undefined || collator.apr24h !== 0) {
-            let last24hApr = collator.apr24h;
-        }
-        logger.debug(`last24hApr: ${last24hApr}`);
-        logger.debug(`lastRoundAprr: ${previousCollatorRound.apr}`);
-        logger.debug(`firstRoundAprr: ${firstCollatorRoundDay.apr}`);
-        let updated24hApr = last24hApr - firstCollatorRoundDay.apr + previousCollatorRound.apr;
-        logger.debug(`last24hApr: ${updated24hApr}`);
-    }
-    else {
-        let updated24hApr = 0;
-    }
-    collator.apr24h = updated24hApr;
-    await collator.save();
-}
-
 export async function populateDB(event: SubstrateEvent, round: Round): Promise<void> {
     logger.debug(`Handling a delegator event: ${event.idx}`);
     let records: (Delegation | DelegatorHistoryElement | CollatorRound)[] = [];
@@ -140,9 +111,8 @@ export async function populateDB(event: SubstrateEvent, round: Round): Promise<v
             record.delegatorId = delegator.toString()
             record.type = eventTypes.Delegate
             record.amount = parseFloat(amount.toString());
-            record.collatorId = collator.toString();
-            logger.debug(`Collator exist ${record.collatorId} check`)
-            await checkIfCollatorExistsOtherwiseCreate(record.collatorId.toString());
+            record.collatorId = collator.toString()
+            await checkIfCollatorExistsOtherwiseCreate(record.collatorId);
 
             const delegation = new Delegation(eventId(event))
             delegation.roundId = round.id;
@@ -202,7 +172,6 @@ export async function populateDB(event: SubstrateEvent, round: Round): Promise<v
                 await collatorRoundDelayed.save();
                 logger.debug(`Saved rewardAmount for delayed round ${collatorRoundDelayed.id}`);
                 await calculateAPRForPreviousRound(collatorRoundDelayed, collator, round)
-                //await calculateAPRFor24h(collatorRoundDelayed, collator, round)
             }
             else {
                 logger.debug("Delegator/Collator not found in map")
