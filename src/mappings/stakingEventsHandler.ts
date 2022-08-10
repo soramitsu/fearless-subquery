@@ -153,18 +153,18 @@ export async function populateDB(event: SubstrateEvent, round: Round): Promise<v
 
         case "Rewarded": {
             const { event: { data: [account, amount] } } = event;
-            if (delegatorRoundList.find(element => element == account.toString().toLowerCase())) {
-                logger.debug(`Rewarded event is emitted to delegator: ${account.toString().toLowerCase()}`);
+            if (delegatorRoundList.find(element => element == account.toString())) {
+                logger.debug(`Rewarded event is emitted to delegator: ${account.toString()}`);
                 record = createAndPartlyPopulateDelegatorHistoryElement(event, round);
-                record.delegatorId = account.toString().toLowerCase()
+                record.delegatorId = account.toString()
                 record.type = eventTypes.Reward
                 record.amount = parseFloat(amount.toString());
             }
-            else if (collatorRoundList.find(element => element == account.toString().toLowerCase())) {
-                logger.debug(`Rewarded event is emitted to collator: ${account.toString().toLowerCase()}`);
+            else if (collatorRoundList.find(element => element == account.toString())) {
+                logger.debug(`Rewarded event is emitted to collator: ${account.toString()}`);
                 logger.debug(`Checking if rewardRound exists in DB`);
                 let rewardRound = await checkIfRoundExistsOtherwiseCreate((parseInt(round.id) - paymentDelay).toString());
-                let collator = await checkIfCollatorExistsOtherwiseCreate(account.toString().toLowerCase());
+                let collator = await checkIfCollatorExistsOtherwiseCreate(account.toString());
                 logger.debug(`Current round - ${round.id}, reward round - ${rewardRound.id}`);
                 logger.debug(`Checking delayed round entity`);
                 let collatorRoundDelayed = await checkIfCollatorRoundExistsOtherwiseCreate(collator.id, rewardRound);
