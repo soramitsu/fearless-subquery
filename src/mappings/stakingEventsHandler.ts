@@ -157,7 +157,7 @@ export async function populateDB(event: SubstrateEvent, round: Round): Promise<v
                 logger.debug(`Rewarded event is emitted to delegator: ${account.toString()}`);
                 record = createAndPartlyPopulateDelegatorHistoryElement(event, round);
                 record.delegatorId = account.toString()
-                record.type = eventTypes.Reward
+                record.type = eventTypes.Stake
                 record.amount = parseFloat(amount.toString());
             }
             else if (collatorRoundList.find(element => element == account.toString())) {
@@ -258,4 +258,3 @@ export async function stakingEventsHandler(event: SubstrateEvent): Promise<void>
     const round = await handleRound();
     await populateDB(event, round);
 };
-
