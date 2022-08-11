@@ -20,9 +20,9 @@
     "lodash": "^4.17.21"
   },
   "devDependencies": {
-    "@polkadot/api": "^4",
-    "@subql/cli": "^0.9.3",
-    "@subql/types": "^0.7.1",
-    "typescript": "^4.1.3"
+    "@polkadot/api": "^6",
+    "@subql/cli": "latest",
+    "@subql/types": "latest",
+    "typescript": "4.3.2"
   }
 }
