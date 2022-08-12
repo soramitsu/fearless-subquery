@@ -39,9 +39,9 @@ async function checkIfCollatorExistsOtherwiseCreate(collatorId: string): Promise
 async function checkIfCollatorRoundExistsOtherwiseCreate(collatorId: string, round: Round): Promise<CollatorRound> {
     let collatorRound = await CollatorRound.get(collatorId + "-" + round.id);
     if (collatorRound === undefined) {
-        logger.debug(`CollatorRound ${collatorId} not found in DB, creating new collatorRound`);
+        logger.debug(`CollatorRound ${collatorId.toString().toLowerCase()} not found in DB, creating new collatorRound`);
         collatorRound = new CollatorRound(collatorId + "-" + round.id);
-        collatorRound.collatorId = collatorId
+        collatorRound.collatorId = collatorId.toString().toLowerCase()
         collatorRound.roundId = round.id
     }
     await collatorRound.save();
@@ -63,7 +63,7 @@ async function calculateAPRForPreviousRound(collatorRoundDelayed: CollatorRound,
 
     logger.debug(`Calculating APR for previous round`);
 
-    const previousCollatorRound = await CollatorRound.get(collator.id.toString() + "-" + (parseInt(round.id) - 1).toString());
+    const previousCollatorRound = await CollatorRound.get(collator.id.toString().toLowerCase() + "-" + (parseInt(round.id) - 1).toString());
 
     // collator stake share = collator’s stake / total stake
     // amount_due = collator’s reward in last round / (0.2 + 0.5 * collator stake share)
@@ -72,7 +72,7 @@ async function calculateAPRForPreviousRound(collatorRoundDelayed: CollatorRound,
     // APR for collator = annual collator reward / (total stake - delegators stake)
 
     logger.debug(`Got previous round ${previousCollatorRound.id}`)
-    logger.debug(`Collator: ${collator.id}`);
+    logger.debug(`Collator: ${collator.id.toString().toLowerCase()}`);
     // logger.debug(`Previous round rewardAmount: ${previousCollatorRound.rewardAmount.toString()}`);
     logger.debug(`Own bond: ${previousCollatorRound.ownBond}`);
     let collatorStakeShare = previousCollatorRound.ownBond / previousCollatorRound.totalBond
@@ -111,13 +111,13 @@ export async function populateDB(event: SubstrateEvent, round: Round): Promise<v
             record.delegatorId = delegator.toString()
             record.type = eventTypes.Delegate
             record.amount = parseFloat(amount.toString());
-            record.collatorId = collator.toString()
+            record.collatorId = collator.toString().toLowerCase()
             await checkIfCollatorExistsOtherwiseCreate(record.collatorId.toString().toLowerCase());
 
             const delegation = new Delegation(eventId(event))
             delegation.roundId = round.id;
-            delegation.collatorId = collator.toString();
-            delegation.delegatorId = delegator.toString();
+            delegation.collatorId = collator.toString().toLowerCase();
+            delegation.delegatorId = delegator.toString().toLowerCase();
 
             records.push(delegation)
             break
@@ -126,28 +126,28 @@ export async function populateDB(event: SubstrateEvent, round: Round): Promise<v
         case "DelegationIncreased": {
             const { event: { data: [delegator, collator, amount] } } = event;
             record = createAndPartlyPopulateDelegatorHistoryElement(event, round);
-            record.delegatorId = delegator.toString()
+            record.delegatorId = delegator.toString().toLowerCase()
             record.type = eventTypes.Stake
             record.amount = parseFloat(amount.toString());
-            record.collatorId = collator.toString()
+            record.collatorId = collator.toString().toLowerCase()
             break
         }
         case "DelegationDecreased": {
             const { event: { data: [delegator, collator, amount] } } = event;
             record = createAndPartlyPopulateDelegatorHistoryElement(event, round);
-            record.delegatorId = delegator.toString()
+            record.delegatorId = delegator.toString().toLowerCase()
             record.type = eventTypes.Unstake
             record.amount = parseFloat(amount.toString());
-            record.collatorId = collator.toString()
+            record.collatorId = collator.toString().toLowerCase()
             break
         }
         case "DelegationRevoked": {
             const { event: { data: [delegator, collator, amount] } } = event;
             record = createAndPartlyPopulateDelegatorHistoryElement(event, round);
-            record.delegatorId = delegator.toString()
+            record.delegatorId = delegator.toString().toLowerCase()
             record.type = eventTypes.Unstake
             record.amount = parseFloat(amount.toString());
-            record.collatorId = collator.toString()
+            record.collatorId = collator.toString().toLowerCase()
             break
         }
 
@@ -167,7 +167,7 @@ export async function populateDB(event: SubstrateEvent, round: Round): Promise<v
                 let collator = await checkIfCollatorExistsOtherwiseCreate(account.toString().toLowerCase());
                 logger.debug(`Current round - ${round.id}, reward round - ${rewardRound.id}`);
                 logger.debug(`Checking delayed round entity`);
-                let collatorRoundDelayed = await checkIfCollatorRoundExistsOtherwiseCreate(collator.id, rewardRound);
+                let collatorRoundDelayed = await checkIfCollatorRoundExistsOtherwiseCreate(collator.id.toString().toLowerCase(), rewardRound);
                 collatorRoundDelayed.rewardAmount = parseFloat(amount.toString());
                 await collatorRoundDelayed.save();
                 logger.debug(`Saved rewardAmount for delayed round ${collatorRoundDelayed.id}`);
@@ -203,14 +203,14 @@ async function handleNewRoundEntities(round: string): Promise<void> {
         let candidateInfoCollatorList = Array<string>();
         candidateInfo.forEach(async ([{ args: [collatorId] }, data]) => {
             let collator = await checkIfCollatorExistsOtherwiseCreate(collatorId.toString().toLowerCase())
-            let collatorRound = new CollatorRound(collator.id + "-" + round);
-            logger.debug(`Created collator-round entity. Collator: ${collator.id.toString()} Round: ${round}`);
+            let collatorRound = new CollatorRound(collator.id.toString().toLowerCase() + "-" + round);
+            logger.debug(`Created collator-round entity. Collator: ${collator.id.toString().toLowerCase()} Round: ${round}`);
             collatorRound.ownBond = parseFloat(data.toHuman()['bond'].toString().replace(/,/g, ''));
             collatorRound.totalBond = parseFloat(data.toHuman()['totalCounted'].toString().replace(/,/g, ''));
 
             logger.debug(`collatorRound.ownBond / collatorRound.totalBond =  ${collatorRound.totalBond / collatorRound.ownBond}`);
 
-            collatorRound.collatorId = collator.id;
+            collatorRound.collatorId = collator.id.toString().toLowerCase();
             collatorRound.roundId = round;
             await collatorRound.save();
 
@@ -222,11 +222,11 @@ async function handleNewRoundEntities(round: string): Promise<void> {
     const handleAtStake = async () => {
         let atStake = await api.query.parachainStaking.atStake.entries(round)
         atStake.forEach(([{ args: [, collatorId] }, data]) => {
-            collatorRoundList.push(collatorId.toString());
-            let collatorDelegatorList: Array<string> = data['delegations'].map(object => object["owner"].toString());
-            logger.debug(`Got delegations of collator ${collatorId.toString()}`);
+            collatorRoundList.push(collatorId.toString().toLowerCase());
+            let collatorDelegatorList: Array<string> = data['delegations'].map(object => object["owner"].toString().toLowerCase());
+            logger.debug(`Got delegations of collator ${collatorId.toString().toLowerCase()}`);
             collatorDelegatorList.forEach(delegatorId => {
-                delegatorRoundList.push(delegatorId.toString());
+                delegatorRoundList.push(delegatorId.toString().toLowerCase());
             });
         });
     }
