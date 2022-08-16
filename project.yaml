@@ -1,4 +1,11 @@
 specVersion: 0.0.1
+runner:
+  node:
+    name: '@subql/node'
+    version: 1.2.1
+  query:
+    name: '@subql/query'
+    version: 1.2.0
 description: Fearless SubQuery project
 repository: 'https://github.com/soramitsu/fearless-subquery'
 schema: ./schema.graphql
