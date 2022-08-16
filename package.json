@@ -27,11 +27,5 @@
     "mem-fs":"^1.2.0",
     "mem-fs-editor":"^8.1.2",
     "@terra-money/terra.js":"^3.0.8"
-  },
-  "exports": {
-    "chaintypes": "src/types.json"
-  },
-  "resolutions": {
-    "ipfs-unixfs": "6.0.6"
   }
 }
