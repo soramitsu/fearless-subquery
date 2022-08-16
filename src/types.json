@@ -5,8 +5,7 @@
           "rpc": {
             "oracle": {
               "getValue": {
-                "description": "Retrieves the oracle value for a given 
-key.",
+                "description": "Retrieves the oracle value for a given key.",
                 "params": [
                   {
                     "name": "providerId",
@@ -236,8 +235,7 @@ key.",
                 "OrmlCurrencyId": "CurrencyId",
                 "PoolInfo": {
                   "totalShares": "Share",
-                  "rewards": "BTreeMap<OrmlCurrencyId, (Balance, 
-Balance)>"
+                  "rewards": "BTreeMap<OrmlCurrencyId, (Balance, Balance)>"
                 },
                 "CompactBalance": "Compact<Balance>",
                 "PoolInfoV0": {
@@ -252,8 +250,7 @@ Balance)>"
                 "AuctionId": "u32",
                 "AuctionIdOf": "AuctionId",
                 "TokenSymbol": {
-                  "_enum": ["ACA", "AUSD", "DOT", "XBTC", "LDOT", 
-"RENBTC"]
+                  "_enum": ["ACA", "AUSD", "DOT", "XBTC", "LDOT", "RENBTC"]
                 },
                 "DexShare": {
                   "_enum": {
@@ -619,8 +616,7 @@ Balance)>"
                 "OrmlCurrencyId": "CurrencyId",
                 "PoolInfo": {
                   "totalShares": "Share",
-                  "rewards": "BTreeMap<OrmlCurrencyId, (Balance, 
-Balance)>"
+                  "rewards": "BTreeMap<OrmlCurrencyId, (Balance, Balance)>"
                 },
                 "CompactBalance": "Compact<Balance>",
                 "PoolInfoV0": {
@@ -635,8 +631,7 @@ Balance)>"
                 "AuctionId": "u32",
                 "AuctionIdOf": "AuctionId",
                 "TokenSymbol": {
-                  "_enum": ["ACA", "AUSD", "DOT", "XBTC", "LDOT", 
-"RENBTC"]
+                  "_enum": ["ACA", "AUSD", "DOT", "XBTC", "LDOT", "RENBTC"]
                 },
                 "DexShare": {
                   "_enum": {
@@ -1002,8 +997,7 @@ Balance)>"
                 "OrmlCurrencyId": "CurrencyId",
                 "PoolInfo": {
                   "totalShares": "Share",
-                  "rewards": "BTreeMap<OrmlCurrencyId, (Balance, 
-Balance)>"
+                  "rewards": "BTreeMap<OrmlCurrencyId, (Balance, Balance)>"
                 },
                 "CompactBalance": "Compact<Balance>",
                 "PoolInfoV0": {
@@ -2985,8 +2979,7 @@ Balance)>"
                 "OrmlCurrencyId": "CurrencyId",
                 "PoolInfo": {
                   "totalShares": "Share",
-                  "rewards": "BTreeMap<OrmlCurrencyId, (Balance, 
-Balance)>"
+                  "rewards": "BTreeMap<OrmlCurrencyId, (Balance, Balance)>"
                 },
                 "CompactBalance": "Compact<Balance>",
                 "PoolInfoV0": {
@@ -3378,8 +3371,7 @@ Balance)>"
                 "OrmlCurrencyId": "CurrencyId",
                 "PoolInfo": {
                   "totalShares": "Share",
-                  "rewards": "BTreeMap<OrmlCurrencyId, (Balance, 
-Balance)>"
+                  "rewards": "BTreeMap<OrmlCurrencyId, (Balance, Balance)>"
                 },
                 "CompactBalance": "Compact<Balance>",
                 "PoolInfoV0": {
@@ -3771,8 +3763,7 @@ Balance)>"
                 "OrmlCurrencyId": "CurrencyId",
                 "PoolInfo": {
                   "totalShares": "Share",
-                  "rewards": "BTreeMap<OrmlCurrencyId, (Balance, 
-Balance)>"
+                  "rewards": "BTreeMap<OrmlCurrencyId, (Balance, Balance)>"
                 },
                 "CompactBalance": "Compact<Balance>",
                 "PoolInfoV0": {
@@ -4125,8 +4116,7 @@ Balance)>"
           "rpc": {
             "oracle": {
               "getValue": {
-                "description": "Retrieves the oracle value for a given 
-key.",
+                "description": "Retrieves the oracle value for a given key.",
                 "params": [
                   {
                     "name": "providerId",
@@ -4356,8 +4346,7 @@ key.",
                 "OrmlCurrencyId": "CurrencyId",
                 "PoolInfo": {
                   "totalShares": "Share",
-                  "rewards": "BTreeMap<OrmlCurrencyId, (Balance, 
-Balance)>"
+                  "rewards": "BTreeMap<OrmlCurrencyId, (Balance, Balance)>"
                 },
                 "CompactBalance": "Compact<Balance>",
                 "PoolInfoV0": {
@@ -4372,8 +4361,7 @@ Balance)>"
                 "AuctionId": "u32",
                 "AuctionIdOf": "AuctionId",
                 "TokenSymbol": {
-                  "_enum": ["ACA", "AUSD", "DOT", "XBTC", "LDOT", 
-"RENBTC"]
+                  "_enum": ["ACA", "AUSD", "DOT", "XBTC", "LDOT", "RENBTC"]
                 },
                 "DexShare": {
                   "_enum": {
@@ -4739,8 +4727,7 @@ Balance)>"
                 "OrmlCurrencyId": "CurrencyId",
                 "PoolInfo": {
                   "totalShares": "Share",
-                  "rewards": "BTreeMap<OrmlCurrencyId, (Balance, 
-Balance)>"
+                  "rewards": "BTreeMap<OrmlCurrencyId, (Balance, Balance)>"
                 },
                 "CompactBalance": "Compact<Balance>",
                 "PoolInfoV0": {
@@ -4755,8 +4742,7 @@ Balance)>"
                 "AuctionId": "u32",
                 "AuctionIdOf": "AuctionId",
                 "TokenSymbol": {
-                  "_enum": ["ACA", "AUSD", "DOT", "XBTC", "LDOT", 
-"RENBTC"]
+                  "_enum": ["ACA", "AUSD", "DOT", "XBTC", "LDOT", "RENBTC"]
                 },
                 "DexShare": {
                   "_enum": {
@@ -5122,8 +5108,7 @@ Balance)>"
                 "OrmlCurrencyId": "CurrencyId",
                 "PoolInfo": {
                   "totalShares": "Share",
-                  "rewards": "BTreeMap<OrmlCurrencyId, (Balance, 
-Balance)>"
+                  "rewards": "BTreeMap<OrmlCurrencyId, (Balance, Balance)>"
                 },
                 "CompactBalance": "Compact<Balance>",
                 "PoolInfoV0": {
@@ -7105,8 +7090,7 @@ Balance)>"
                 "OrmlCurrencyId": "CurrencyId",
                 "PoolInfo": {
                   "totalShares": "Share",
-                  "rewards": "BTreeMap<OrmlCurrencyId, (Balance, 
-Balance)>"
+                  "rewards": "BTreeMap<OrmlCurrencyId, (Balance, Balance)>"
                 },
                 "CompactBalance": "Compact<Balance>",
                 "PoolInfoV0": {
@@ -7498,8 +7482,7 @@ Balance)>"
                 "OrmlCurrencyId": "CurrencyId",
                 "PoolInfo": {
                   "totalShares": "Share",
-                  "rewards": "BTreeMap<OrmlCurrencyId, (Balance, 
-Balance)>"
+                  "rewards": "BTreeMap<OrmlCurrencyId, (Balance, Balance)>"
                 },
                 "CompactBalance": "Compact<Balance>",
                 "PoolInfoV0": {
@@ -7891,8 +7874,7 @@ Balance)>"
                 "OrmlCurrencyId": "CurrencyId",
                 "PoolInfo": {
                   "totalShares": "Share",
-                  "rewards": "BTreeMap<OrmlCurrencyId, (Balance, 
-Balance)>"
+                  "rewards": "BTreeMap<OrmlCurrencyId, (Balance, Balance)>"
                 },
                 "CompactBalance": "Compact<Balance>",
                 "PoolInfoV0": {
@@ -8245,8 +8227,7 @@ Balance)>"
           "rpc": {
             "oracle": {
               "getValue": {
-                "description": "Retrieves the oracle value for a given 
-key.",
+                "description": "Retrieves the oracle value for a given key.",
                 "params": [
                   {
                     "name": "providerId",
@@ -8476,8 +8457,7 @@ key.",
                 "OrmlCurrencyId": "CurrencyId",
                 "PoolInfo": {
                   "totalShares": "Share",
-                  "rewards": "BTreeMap<OrmlCurrencyId, (Balance, 
-Balance)>"
+                  "rewards": "BTreeMap<OrmlCurrencyId, (Balance, Balance)>"
                 },
                 "CompactBalance": "Compact<Balance>",
                 "PoolInfoV0": {
@@ -8492,8 +8472,7 @@ Balance)>"
                 "AuctionId": "u32",
                 "AuctionIdOf": "AuctionId",
                 "TokenSymbol": {
-                  "_enum": ["ACA", "AUSD", "DOT", "XBTC", "LDOT", 
-"RENBTC"]
+                  "_enum": ["ACA", "AUSD", "DOT", "XBTC", "LDOT", "RENBTC"]
                 },
                 "DexShare": {
                   "_enum": {
@@ -8859,8 +8838,7 @@ Balance)>"
                 "OrmlCurrencyId": "CurrencyId",
                 "PoolInfo": {
                   "totalShares": "Share",
-                  "rewards": "BTreeMap<OrmlCurrencyId, (Balance, 
-Balance)>"
+                  "rewards": "BTreeMap<OrmlCurrencyId, (Balance, Balance)>"
                 },
                 "CompactBalance": "Compact<Balance>",
                 "PoolInfoV0": {
@@ -8875,8 +8853,7 @@ Balance)>"
                 "AuctionId": "u32",
                 "AuctionIdOf": "AuctionId",
                 "TokenSymbol": {
-                  "_enum": ["ACA", "AUSD", "DOT", "XBTC", "LDOT", 
-"RENBTC"]
+                  "_enum": ["ACA", "AUSD", "DOT", "XBTC", "LDOT", "RENBTC"]
                 },
                 "DexShare": {
                   "_enum": {
@@ -9242,8 +9219,7 @@ Balance)>"
                 "OrmlCurrencyId": "CurrencyId",
                 "PoolInfo": {
                   "totalShares": "Share",
-                  "rewards": "BTreeMap<OrmlCurrencyId, (Balance, 
-Balance)>"
+                  "rewards": "BTreeMap<OrmlCurrencyId, (Balance, Balance)>"
                 },
                 "CompactBalance": "Compact<Balance>",
                 "PoolInfoV0": {
@@ -11225,8 +11201,7 @@ Balance)>"
                 "OrmlCurrencyId": "CurrencyId",
                 "PoolInfo": {
                   "totalShares": "Share",
-                  "rewards": "BTreeMap<OrmlCurrencyId, (Balance, 
-Balance)>"
+                  "rewards": "BTreeMap<OrmlCurrencyId, (Balance, Balance)>"
                 },
                 "CompactBalance": "Compact<Balance>",
                 "PoolInfoV0": {
@@ -11618,8 +11593,7 @@ Balance)>"
                 "OrmlCurrencyId": "CurrencyId",
                 "PoolInfo": {
                   "totalShares": "Share",
-                  "rewards": "BTreeMap<OrmlCurrencyId, (Balance, 
-Balance)>"
+                  "rewards": "BTreeMap<OrmlCurrencyId, (Balance, Balance)>"
                 },
                 "CompactBalance": "Compact<Balance>",
                 "PoolInfoV0": {
@@ -12011,8 +11985,7 @@ Balance)>"
                 "OrmlCurrencyId": "CurrencyId",
                 "PoolInfo": {
                   "totalShares": "Share",
-                  "rewards": "BTreeMap<OrmlCurrencyId, (Balance, 
-Balance)>"
+                  "rewards": "BTreeMap<OrmlCurrencyId, (Balance, Balance)>"
                 },
                 "CompactBalance": "Compact<Balance>",
                 "PoolInfoV0": {
