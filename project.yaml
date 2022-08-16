@@ -12,7 +12,7 @@ schema: ./schema.graphql
 network:
   endpoint: wss://karura-rpc-0.aca-api.network
   chaintypes:
-    file: './src/types.json'
+    file: ./src/types.json
   typesBundle: {
     "spec": {
       "acala": {
