@@ -1,4 +1,4 @@
-specVersion: 0.0.1
+specVersion: 1.0.0
 runner:
   node:
     name: '@subql/node'
