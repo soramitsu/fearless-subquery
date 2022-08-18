@@ -8,11 +8,13 @@ runner:
     version: 1.2.0
 description: Fearless SubQuery project
 repository: 'https://github.com/soramitsu/fearless-subquery'
-schema: ./schema.graphql
+schema: 
+    file: ./schema.graphql
 network:
   endpoint: wss://karura-rpc-0.aca-api.network
+  endpoint: wss://karura.api.onfinality.io/public-ws
+  dictionary: https://api.subquery.network/sq/AcalaNetwork/karura-dictionary
   chaintypes:
-    file: ./src/types.json
   typesBundle: {
     "spec": {
       "acala": {
@@ -12363,6 +12365,7 @@ dataSources:
 
     # polkadot test rewards block: 5704983
     mapping:
+      file: ./dist/index.js
       handlers:
         - handler: handleHistoryElement
           kind: substrate/CallHandler

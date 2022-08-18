@@ -21,12 +21,16 @@
   },
     "devDependencies": {
     "@polkadot/api": "^8",
-    "@subql/cli": "latest",
+    "@subql/cli": "1.6.0",
     "@subql/types": "latest",
     "typescript": "4.3.2",
     "mem-fs":"^1.2.0",
     "mem-fs-editor":"^8.1.2",
-    "@terra-money/terra.js":"^3.0.8"
+    "@terra-money/terra.js":"^3.0.8",
+    "@polkadot/util":"10.1.4"
+  },
+  "exports": {
+    "chaintypes": "src/types.json"
   },
   "resolutions": {
     "ipfs-unixfs": "6.0.6"
