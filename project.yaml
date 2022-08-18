@@ -11,9 +11,11 @@ repository: 'https://github.com/soramitsu/fearless-subquery'
 schema: 
     file: ./schema.graphql
 network:
-  endpoint: wss://karura.api.onfinality.io/public-ws
+  endpoint: wss://karura-rpc-0.aca-api.network
   dictionary: https://api.subquery.network/sq/AcalaNetwork/karura-dictionary
+  chainId: '0xbaf5aabe40646d11f0ee8abbdc64f4a4b7674925cba08e4a05ff9ebed6e2126b'
   chaintypes:
+    file: './src/types.json'
   typesBundle: {
     "spec": {
       "acala": {
