@@ -35,7 +35,7 @@ type Delegator @entity {
 
 type Collator @entity {
   id: ID!
-  apr24h: Float!
+  apr24h: Float
 }
 
 type DelegatorHistoryElement @entity {
