@@ -12,9 +12,9 @@ List   jobParams         = [
     booleanParam(defaultValue: false, name: 'stagingSlot'),
     booleanParam(defaultValue: false, name: 'prodSlot'),
     ]
-String endpoint          = 'heiko-rpc.parallel.fi'
-String telegramChatId    = 'telegram-deploy-chat-id'
-Boolean statusNotif      = true
+String endpoint          = '<default>'
+//String telegramChatId    = 'telegram-deploy-chat-id'
+//Boolean statusNotif      = true
 
 
 properties([
@@ -44,7 +44,7 @@ pipeline {
         SUBQUERY_ORG =  'soramitsu'
         matrix_chain = "Quartz x Fearless Wallet"
         SUBQL_ACCESS_TOKEN = credentials("${subqueryToken}")
-        TELEGRAM_CHAT_ID = credentials("${telegramChatId}")
+        //TELEGRAM_CHAT_ID = credentials("${telegramChatId}")
     }
 
     stages {
