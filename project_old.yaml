@@ -1,25 +1,22 @@
-specVersion: 1.0.0
-name: fearless
-version: 1.0.0
-runner:
-  node:
-    name: '@subql/node'
-    version: "*"
-  query:
-    name: '@subql/query'
-    version: "*"
+specVersion: 0.0.1
 description: Fearless SubQuery project
 repository: 'https://github.com/soramitsu/fearless-subquery'
-schema:
-  file: ./schema.graphql
+schema: ./schema.graphql
 network:
-  chainId: '0xcd4d732201ebe5d6b014edda071c4203e16867305332301dc8d092044b28e554'
-  endpoint: 'wss://eu-ws-quartz.unique.network'
+  endpoint: wss://eu-ws-quartz.unique.network
 dataSources:
-  - kind: substrate/Runtime
+  - name: main
+    kind: substrate/Runtime
     startBlock: 1
+
+    # polkadot test slash bloks: 3570179
+
+    # westend test stake block: 6000000
+    # kusama test stake block: 8124580
+    # polkadot test stake block: 5645004
+
+    # polkadot test rewards block: 5704983
     mapping:
-      file: ./dist/index.js
       handlers:
         - handler: handleHistoryElement
           kind: substrate/CallHandler
