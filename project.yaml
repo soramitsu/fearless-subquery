@@ -1,5 +1,5 @@
 specVersion: 1.0.0
-name: fearless
+name: fearless-subquery
 version: 1.0.0
 runner:
   node:
@@ -8,13 +8,13 @@ runner:
   query:
     name: '@subql/query'
     version: 1.4.0
-description: Fearless SubQuery project
+description: 'Fearless-SubQuery-project'
 repository: 'https://github.com/soramitsu/fearless-subquery'
 schema:
   file: ./schema.graphql
 network:
   chainId: '0xca93a37c913a25fa8fdb33c7f738afc39379cb71d37874a16d4c091a5aef9f89'
-  endpoint: 'wss://imbue-kusama.imbue.network'
+  endpoint: wss://imbue-kusama.imbue.network
 dataSources:
   - kind: substrate/Runtime
     startBlock: 1
