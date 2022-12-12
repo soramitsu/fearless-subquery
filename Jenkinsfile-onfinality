@@ -42,7 +42,7 @@ pipeline {
         SUBQUERY_INDEXER_VERSION_STAGING = 'v1.4.1'
         SUBQUERY_NODE_VERSION_STAGING = 'v1.4.0'
         SUBQUERY_ORG =  'soramitsu'
-        matrix_chain = "${targetEnvironment}"
+        matrix_chain = ${targetEnvironment}
         SUBQL_ACCESS_TOKEN = credentials("${subqueryToken}")
     }
 
@@ -101,7 +101,7 @@ pipeline {
                             --org=${SUBQUERY_ORG} \
                             --dedicatedDB=${SUBQUERY_PROJECT_DB} \
                             --projectName=${matrix_chain} \
-                            --gitRepo=https://github.com/sora-xor/sora-subquery
+                            --gitRepo=https://github.com/soramitsu/fearless-subquery
                             echo project ${matrix_chain} is created
                         """
                     }
@@ -127,7 +127,7 @@ pipeline {
                             --org=${SUBQUERY_ORG} \
                             --dict=dict \
                             --ipfsCID=\$RESULT \
-                            --projectName=${matrix_chain} \
+                            --projectName=${matrix_chain}
                             echo "New deployment in production slot is executed"
                         """
                     }
