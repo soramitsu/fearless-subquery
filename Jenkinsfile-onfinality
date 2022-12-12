@@ -12,7 +12,7 @@ List   jobParams         = [
     booleanParam(defaultValue: false, name: 'stagingSlot'),
     booleanParam(defaultValue: false, name: 'prodSlot'),
     ]
-String endpoint          = 'imbue-kusama.imbue.network'
+String endpoint          = 'eu-ws-quartz.unique.network'
 String registry               = 'docker.soramitsu.co.jp'
 String dockerBuildToolsUserId = 'bot-build-tools-ro'
 Boolean disableSecretScanner  = false
@@ -127,7 +127,8 @@ pipeline {
                             --org=${SUBQUERY_ORG} \
                             --dict=dict \
                             --ipfsCID=\$RESULT \
-                            --projectName=${matrix_chain}
+                            --projectName=${matrix_chain} \
+                            --endpoint=wss://${endpoint}
                             echo "New deployment in production slot is executed"
                         """
                     }
@@ -154,6 +155,7 @@ pipeline {
                             --dict=dict \
                             --ipfsCID=\$RESULT \
                             --projectName=${matrix_chain} \
+                            --endpoint=wss://${endpoint} \
                             --type=stage
                             echo "New deployment in staging slot is executed"
                         """
