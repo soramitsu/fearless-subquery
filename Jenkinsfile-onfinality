@@ -96,18 +96,16 @@ pipeline {
                     sh """
                        apt-get update && apt-get install curl -y
                        yarn
-                       yarn codegen
+                       subql codegen
                        RESULT=\$(subql publish -f project.yaml  | grep -oP ': \\K.*')
                        subql deployment:deploy \
-                       --indexerVersion=${SUBQUERY_INDEXER_VERSION} \
-                       --queryVersion=${SUBQUERY_NODE_VERSION} \
+                       --indexerVersion=${SUBQUERY_INDEXER_VERSION_STAGING} \
+                       --queryVersion=${SUBQUERY_NODE_VERSION_STAGING} \
                        --org=${SUBQUERY_ORG} \
-                       --indexerSubscription \
-                       --querySubscription \
                        --dict=dict \
                        --ipfsCID=\$RESULT \
                        --projectName=${matrix_chain} \
-                       --endpoint=wss://${endpoint}
+                       --endpoint=wss://${endpoint} \
                        echo "New deployment in production slot is executed"
                     """
                 }
