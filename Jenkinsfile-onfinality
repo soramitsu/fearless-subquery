@@ -129,8 +129,6 @@ pipeline {
                        --queryVersion=${SUBQUERY_NODE_VERSION_STAGING} \
                        --org=${SUBQUERY_ORG} \
                        --dict=dict \
-                       --indexerSubscription \
-                       --querySubscription \
                        --ipfsCID=\$RESULT \
                        --projectName=${matrix_chain} \
                        --endpoint=wss://${endpoint} \
