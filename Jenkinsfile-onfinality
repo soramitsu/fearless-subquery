@@ -81,7 +81,7 @@ pipeline {
                     subql project:create-project \
                     --org=${SUBQUERY_ORG} \
                     --projectName=${matrix_chain} \
-                    --gitRepo=https://github.com/sora-xor/sora-subquery
+                    --gitRepo=https://github.com/soramitsu/fearless-subquery
                     echo project ${matrix_chain} is created
                 """
                 }
@@ -122,7 +122,7 @@ pipeline {
                     sh """
                        apt-get update && apt-get install curl -y
                        yarn
-                       yarn codegen
+                       subql codegen
                        RESULT=\$(subql publish -f project.yaml  | grep -oP ': \\K.*')
                        subql deployment:deploy \
                        --indexerVersion=${SUBQUERY_INDEXER_VERSION_STAGING} \
