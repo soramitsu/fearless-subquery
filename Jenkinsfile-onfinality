@@ -39,7 +39,7 @@ pipeline {
         SUBQUERY_INDEXER_VERSION_STAGING = 'v1.4.1'
         SUBQUERY_NODE_VERSION_STAGING = 'v1.4.0'
         SUBQUERY_ORG =  'soramitsu'
-        matrix_chain = "Imbue x Fearless Wallet"
+        matrix_chain = "Imbue-x-Fearless-Wallet"
         SUBQL_ACCESS_TOKEN = credentials("${subqueryToken}")
     }
 
