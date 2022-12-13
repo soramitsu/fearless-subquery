@@ -35,7 +35,7 @@ pipeline {
     }
 
     environment {
-        SUBQUERY_CLI_VERSION = '1.8.0'
+        SUBQUERY_CLI_VERSION = '1.9.1'
         SUBQUERY_INDEXER_VERSION = 'v1.14.1'
         SUBQUERY_NODE_VERSION = 'v1.5.0'
         SUBQUERY_CLI_VERSION_STAGING = '1.8.0'
@@ -127,8 +127,7 @@ pipeline {
                             --org=${SUBQUERY_ORG} \
                             --dict=dict \
                             --ipfsCID=\$RESULT \
-                            --projectName=${matrix_chain} \
-                            --endpoint=wss://${endpoint}
+                            --projectName=${matrix_chain}
                             echo "New deployment in production slot is executed"
                         """
                     }
@@ -155,7 +154,6 @@ pipeline {
                             --dict=dict \
                             --ipfsCID=\$RESULT \
                             --projectName=${matrix_chain} \
-                            --endpoint=wss://${endpoint} \
                             --type=stage
                             echo "New deployment in staging slot is executed"
                         """
