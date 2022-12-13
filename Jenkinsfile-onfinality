@@ -45,7 +45,6 @@ pipeline {
         matrix_chain = "${targetEnvironment}"
         SUBQL_ACCESS_TOKEN = credentials("${subqueryToken}")
     }
-}
 
     stages {
         stage('Secret scanner') {
