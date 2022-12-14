@@ -105,7 +105,7 @@ pipeline {
                        --dict=dict \
                        --ipfsCID=\$RESULT \
                        --projectName=${matrix_chain} \
-                       --endpoint=wss://${endpoint} \
+                       --endpoint=wss://${endpoint}
                        echo "New deployment in production slot is executed"
                     """
                 }
