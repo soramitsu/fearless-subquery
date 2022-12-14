@@ -3,7 +3,7 @@
 String agentLabel        = 'docker-build-agent'
 String envImageName      = 'node:16.18.1-bullseye-slim'
 String subqueryToken     = 'subquery-token'
-String targetEnvironment =  'invarch-tinker-x-fearless-wallet'
+String targetEnvironment =  'invarch-tinker-fearless-wallet'
 String jobList           =  ''
 List   jobParams         = [
     string(defaultValue: targetEnvironment, name: 'targetEnvironment', trim: true),
@@ -100,7 +100,6 @@ pipeline {
                             npm install -g @subql/cli@${SUBQUERY_CLI_VERSION}
                             subql project:create-project \
                             --org=${SUBQUERY_ORG} \
-                            --dedicatedDB=${SUBQUERY_PROJECT_DB} \
                             --projectName=${matrix_chain} \
                             --gitRepo=https://github.com/soramitsu/fearless-subquery
                             echo project ${matrix_chain} is created
