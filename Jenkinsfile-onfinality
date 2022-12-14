@@ -39,6 +39,7 @@ pipeline {
         SUBQUERY_INDEXER_VERSION_STAGING = 'v1.16.0'
         SUBQUERY_NODE_VERSION_STAGING = 'v1.9.1'
         SUBQUERY_ORG =  'soramitsu'
+        SUBQUERY_PROJECT_DB = 'sora'
         matrix_chain = "${targetEnvironment}"
         SUBQL_ACCESS_TOKEN = credentials("${subqueryToken}")
     }
@@ -81,6 +82,7 @@ pipeline {
                     subql project:create-project \
                     --org=${SUBQUERY_ORG} \
                     --projectName=${matrix_chain} \
+                    --dedicatedDB=${SUBQUERY_PROJECT_DB} \
                     --gitRepo=https://github.com/soramitsu/fearless-subquery
                     echo project ${matrix_chain} is created
                 """
