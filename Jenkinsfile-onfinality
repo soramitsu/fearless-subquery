@@ -126,7 +126,7 @@ pipeline {
                             --org=${SUBQUERY_ORG} \
                             --dict=dict \
                             --ipfsCID=\$RESULT \
-                            --endpoint=wss://${endpoint}
+                            --endpoint=wss://${endpoint} \
                             --projectName=${matrix_chain}
                             echo "New deployment in production slot is executed"
                         """
@@ -153,7 +153,7 @@ pipeline {
                             --org=${SUBQUERY_ORG} \
                             --dict=dict \
                             --ipfsCID=\$RESULT \
-                            --endpoint=wss://${endpoint}
+                            --endpoint=wss://${endpoint} \
                             --projectName=${matrix_chain} \
                             --type=stage
                             echo "New deployment in staging slot is executed"
