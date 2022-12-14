@@ -3,7 +3,7 @@
 String agentLabel        = 'docker-build-agent'
 String envImageName      = 'node:16.18.1-bullseye-slim'
 String subqueryToken     = 'subquery-token'
-String targetEnvironment =  'invarch-tinker-fearless-wallet'
+String targetEnvironment =  'invarch-tinker-fearlesswallet'
 String jobList           =  ''
 List   jobParams         = [
     string(defaultValue: targetEnvironment, name: 'targetEnvironment', trim: true),
@@ -42,7 +42,6 @@ pipeline {
         SUBQUERY_INDEXER_VERSION_STAGING = 'v1.14.1'
         SUBQUERY_NODE_VERSION_STAGING = 'v1.5.0'
         SUBQUERY_ORG =  'soramitsu'
-        SUBQUERY_PROJECT_DB = 'sora'
         matrix_chain = "${targetEnvironment}"
         SUBQL_ACCESS_TOKEN = credentials("${subqueryToken}")
     }
