@@ -80,7 +80,6 @@ pipeline {
                     sh """
                     subql project:create-project \
                     --org=${SUBQUERY_ORG} \
-                    --dedicatedDB=${SUBQUERY_PROJECT_DB} \
                     --projectName=${matrix_chain} \
                     --gitRepo=https://github.com/soramitsu/fearless-subquery
                     echo project ${matrix_chain} is created
