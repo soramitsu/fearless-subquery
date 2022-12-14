@@ -100,7 +100,7 @@ pipeline {
                             npm install -g @subql/cli@${SUBQUERY_CLI_VERSION}
                             subql project:create-project \
                             --org=${SUBQUERY_ORG} \
-                            --projectName=${matrix_chain} 
+                            --projectName=${matrix_chain} \
                             --dedicatedDB=${SUBQUERY_PROJECT_DB} \
                             --gitRepo=https://github.com/soramitsu/fearless-subquery
                             echo project ${matrix_chain} is created
