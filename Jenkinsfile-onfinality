@@ -126,6 +126,7 @@ pipeline {
                             --queryVersion=${SUBQUERY_NODE_VERSION} \
                             --org=${SUBQUERY_ORG} \
                             --dict=dict \
+                            --dedicatedDB=sora \
                             --ipfsCID=\$RESULT \
                             --projectName=${matrix_chain} \
                             --endpoint=wss://${endpoint}
@@ -153,6 +154,7 @@ pipeline {
                             --queryVersion=${SUBQUERY_NODE_VERSION} \
                             --org=${SUBQUERY_ORG} \
                             --dict=dict \
+                            --dedicatedDB=sora \
                             --ipfsCID=\$RESULT \
                             --projectName=${matrix_chain} \
                             --endpoint=wss://${endpoint} \
