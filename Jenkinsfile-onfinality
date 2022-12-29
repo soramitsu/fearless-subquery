@@ -12,7 +12,7 @@ List   jobParams         = [
     booleanParam(defaultValue: false, name: 'stagingSlot'),
     booleanParam(defaultValue: false, name: 'prodSlot'),
     ]
-String endpoint               = 'tinker.invarch.network'
+String endpoint               = 'invarch-tinkernet.api.onfinality.io/ws?apikey=6d6b362e-d99b-486f-b160-921d3d322af8'
 String registry               = 'docker.soramitsu.co.jp'
 String dockerBuildToolsUserId = 'bot-build-tools-ro'
 Boolean disableSecretScanner  = false
