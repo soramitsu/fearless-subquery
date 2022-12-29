@@ -128,8 +128,9 @@ pipeline {
                             --org=${SUBQUERY_ORG} \
                             --disableHistorical \
                             --useDefaults \
-                            --projectName=${matrix_chain} \
-                            --endpoint=wss://${endpoint}
+                            --ipfsCID=\$RESULT \
+                            --endpoint=wss://${endpoint} \
+                            --projectName=${matrix_chain}
                             echo "New deployment in production slot is executed"
                         """
                     }
@@ -156,8 +157,8 @@ pipeline {
                             --disableHistorical \
                             --useDefaults \
                             --ipfsCID=\$RESULT \
-                            --projectName=${matrix_chain} \
                             --endpoint=wss://${endpoint} \
+                            --projectName=${matrix_chain} \
                             --type=stage
                             echo "New deployment in staging slot is executed"
                         """
