@@ -4,17 +4,17 @@ version: 1.0.0
 runner:
   node:
     name: '@subql/node'
-    version: 1.16.0
+    version: 1.17.1
   query:
     name: '@subql/query'
-    version: 1.9.1
+    version: 1.10.1
 description: Fearless SubQuery project
 repository: 'https://github.com/soramitsu/fearless-subquery'
 schema:
   file: ./schema.graphql
 network:
   chainId: '0xd42e9606a995dfe433dc7955dc2a70f495f350f373daa200098ae84437816ad2'
-  endpoint: 'wss://tinker.invarch.network'
+  endpoint: 'wss://invarch-tinkernet.api.onfinality.io/ws?apikey=6d6b362e-d99b-486f-b160-921d3d322af8'
 dataSources:
   - kind: substrate/Runtime
     startBlock: 1
