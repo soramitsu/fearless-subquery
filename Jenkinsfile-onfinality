@@ -126,7 +126,8 @@ pipeline {
                             --indexerVersion=${SUBQUERY_INDEXER_VERSION} \
                             --queryVersion=${SUBQUERY_NODE_VERSION} \
                             --org=${SUBQUERY_ORG} \
-                            --dict=dict \
+                            --disableHistorical \
+                            --useDefaults \
                             --ipfsCID=\$RESULT \
                             --endpoint=wss://${endpoint} \
                             --projectName=${matrix_chain}
@@ -153,7 +154,8 @@ pipeline {
                             --indexerVersion=${SUBQUERY_INDEXER_VERSION} \
                             --queryVersion=${SUBQUERY_NODE_VERSION} \
                             --org=${SUBQUERY_ORG} \
-                            --dict=dict \
+                            --disableHistorical \
+                            --useDefaults \
                             --ipfsCID=\$RESULT \
                             --endpoint=wss://${endpoint} \
                             --projectName=${matrix_chain} \
