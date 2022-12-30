@@ -12,7 +12,7 @@ List   jobParams         = [
     booleanParam(defaultValue: false, name: 'stagingSlot'),
     booleanParam(defaultValue: false, name: 'prodSlot'),
     ]
-String endpoint          = 'heiko-rpc.parallel.fi'
+String endpoint          = 'kabocha.jelliedowl.com'
 
 properties([
     parameters( jobParams ),
