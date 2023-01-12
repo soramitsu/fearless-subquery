@@ -13,7 +13,7 @@ repository: 'https://github.com/soramitsu/fearless-subquery'
 schema:
   file: ./schema.graphql
 network:
-  chainId: '0xcdedc8eadbfa209d3f207bba541e57c3c58a667b05a2e1d1e86353c9000758da'
+  chainId: '0xf195ef30c646663a24a3164b307521174a86f437c586397a43183c736a8383c1'
   endpoint: wss://api.solo.integritee.io
 dataSources:
   - kind: substrate/Runtime
