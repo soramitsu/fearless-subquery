@@ -20,15 +20,15 @@
     "lodash": "^4.17.21"
   },
   "devDependencies": {
-    "@polkadot/api": "^7",
-    "@subql/cli": "latest",
-    "@subql/types": "latest",
-    "typescript": "4.3.2"
+    "@polkadot/api": "9.11.1",
+    "@subql/cli": "^1.10.1",
+    "@subql/types": "^1.7.0",
+    "typescript": "^4.9.4"
   },
   "exports": {
     "chaintypes": "src/chaintypes.ts"
   },
   "resolutions": {
-    "ipfs-unixfs": "6.0.6"
+    "ipfs-unixfs": "9.0.0"
   }
 }
