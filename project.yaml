@@ -1,5 +1,5 @@
 specVersion: 1.0.0
-name: fearless-oak
+name: Fearless-khala
 version: 1.0.0
 runner:
   node:
@@ -9,14 +9,12 @@ runner:
     name: '@subql/query'
     version: 1.10.1
 description: Fearless SubQuery project
-repository: https://github.com/soramitsu/fearless-subquery
+repository: 'https://github.com/soramitsu/fearless-subquery'
 schema:
   file: ./schema.graphql
 network:
-  genesisHash: '0x0f62b701fb12d02237a33b84818c11f621653d2b1614c777973babf4652b535d'
-  endpoint: wss://rpc.turing.oak.tech
-  chaintypes:
-    file: ./dist/chaintypes.js
+  chainId: '0x0f62b701fb12d02237a33b84818c11f621653d2b1614c777973babf4652b535d'
+  endpoint: 'wss://rpc.turing.oak.tech'
 dataSources:
   - kind: substrate/Runtime
     startBlock: 1
