@@ -154,7 +154,6 @@ pipeline {
                             --indexerVersion=${SUBQUERY_INDEXER_VERSION} \
                             --queryVersion=${SUBQUERY_NODE_VERSION} \
                             --org=${SUBQUERY_ORG} \
-                            --disableHistorical \
                             --useDefaults \
                             --ipfsCID=\$RESULT \
                             --endpoint=wss://${endpoint} \
