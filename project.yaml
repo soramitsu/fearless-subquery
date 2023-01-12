@@ -1,22 +1,25 @@
-specVersion: 0.0.1
+specVersion: 1.0.0
+name: Fearless-Integritee
+version: 1.0.0
+runner:
+  node:
+    name: '@subql/node'
+    version: 1.17.1
+  query:
+    name: '@subql/query'
+    version: 1.10.1
 description: Fearless SubQuery project
 repository: 'https://github.com/soramitsu/fearless-subquery'
-schema: ./schema.graphql
+schema:
+  file: ./schema.graphql
 network:
-  endpoint: wss://api.solo.integritee.io#
+  chainId: '0xcdedc8eadbfa209d3f207bba541e57c3c58a667b05a2e1d1e86353c9000758da'
+  endpoint: wss://api.solo.integritee.io
 dataSources:
-  - name: main
-    kind: substrate/Runtime
+  - kind: substrate/Runtime
     startBlock: 1
-
-    # polkadot test slash bloks: 3570179
-
-    # westend test stake block: 6000000
-    # kusama test stake block: 8124580
-    # polkadot test stake block: 5645004
-
-    # polkadot test rewards block: 5704983
     mapping:
+      file: ./dist/index.js
       handlers:
         - handler: handleHistoryElement
           kind: substrate/CallHandler
