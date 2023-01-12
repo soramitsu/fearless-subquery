@@ -1,22 +1,25 @@
-specVersion: 0.0.1
+specVersion: 1.0.0
+name: Fearless-khala
+version: 1.0.0
+runner:
+  node:
+    name: '@subql/node'
+    version: 1.17.1
+  query:
+    name: '@subql/query'
+    version: 1.10.1
 description: Fearless SubQuery project
 repository: 'https://github.com/soramitsu/fearless-subquery'
-schema: ./schema.graphql
+schema:
+  file: ./schema.graphql
 network:
-  endpoint: wss://picasso-rpc.composable.finance
+  chainId: '0x6811a339673c9daa897944dcdac99c6e2939cc88245ed21951a0a3c9a2be75bc'
+  endpoint: 'wss://picasso-rpc.composable.finance'
 dataSources:
-  - name: main
-    kind: substrate/Runtime
+  - kind: substrate/Runtime
     startBlock: 1
-
-    # polkadot test slash bloks: 3570179
-
-    # westend test stake block: 6000000
-    # kusama test stake block: 8124580
-    # polkadot test stake block: 5645004
-
-    # polkadot test rewards block: 5704983
     mapping:
+      file: ./dist/index.js
       handlers:
         - handler: handleHistoryElement
           kind: substrate/CallHandler
