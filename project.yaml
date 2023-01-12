@@ -17,7 +17,7 @@ network:
   endpoint: 'wss://spiritnet.kilt.io'
 dataSources:
   - kind: substrate/Runtime
-    startBlock: 1
+    startBlock: 157
     mapping:
       file: ./dist/index.js
       handlers:
