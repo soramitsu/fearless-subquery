@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "skipLibCheck": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "esModuleInterop": true,
@@ -9,12 +10,14 @@
     "module": "commonjs",
     "outDir": "dist",
     "rootDir": "src",
-    "target": "es2020",
-    "skipLibCheck": true,
-    "strictNullChecks": true
+    "target": "es2017",
+    "baseUrl": ".",
+    "lib": [
+      "ES2021.String"
+    ]
   },
   "include": [
     "src/**/*",
     "node_modules/@subql/types/dist/global.d.ts"
-  ]
+  ],
 }

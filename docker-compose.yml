@@ -8,40 +8,46 @@ services:
     volumes:
       - .data/postgres:/var/lib/postgresql/data
     environment:
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_PASSWORD: ${DB_PASS}
+    healthcheck:
+      test: pg_isready -U postgres
 
   subquery-node:
-    image: onfinality/subql-node:latest
+    image: onfinality/subql-node:v5.6.0
     depends_on:
-      - "postgres"
+      postgres:
+        condition: service_healthy
     restart: always
     environment:
-      DB_USER: postgres
-      DB_PASS: postgres
-      DB_DATABASE: postgres
-      DB_HOST: postgres
-      DB_POST: 5432
+      DB_USER: ${DB_USER}
+      DB_PASS: ${DB_PASS}
+      DB_DATABASE: ${DB_DATABASE}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
     volumes:
       - ./:/app
     command:
       - -f=/app
-      - --local #remove
-      #- --batch-size=10
+      - --log-level=debug
+      - --disable-historical=true
+      - --subscription
+      - --allow-schema-migration=true
 
   graphql-engine:
-    image: onfinality/subql-query:latest
+    image: onfinality/subql-query:v2.15.2
     ports:
       - 3000:3000
     depends_on:
-      - "postgres"
+      postgres:
+        condition: service_healthy
     restart: always
     environment:
-      DB_USER: postgres
-      DB_PASS: postgres
-      DB_DATABASE: postgres
-      DB_HOST: postgres
-      DB_PORT: 5432
+      DB_USER: ${DB_USER}
+      DB_PASS: ${DB_PASS}
+      DB_DATABASE: ${DB_DATABASE}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
     command:
       - --name=app
       - --playground
-
+      - --subscription

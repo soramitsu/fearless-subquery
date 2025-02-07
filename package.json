@@ -1,28 +1,53 @@
 {
-  "name": "fearless",
+  "name": "analog-bridge-subquery",
   "version": "1.0.0",
-  "description": "This is an example of using 1-N relations",
+  "description": "",
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc -b",
+    "format": "prettier --write \"**/*.ts\"",
     "prepack": "rm -rf dist && npm build",
-    "start:docker": "docker-compose pull && docker-compose up --remove-orphans",
-    "codegen": "./node_modules/.bin/subql codegen"
+    "test": "jest --coverage",
+    "codegen": "./node_modules/.bin/subql codegen --file=project-onfinality.yaml",
+    "config:types": "node ./scripts/types.mjs",
+    "config:chainId": "node ./scripts/chainId.mjs",
+    "config:chainId:update": "node ./scripts/chainId.mjs --update",
+    "config:startBlock:update": "node ./scripts/startBlock.mjs",
+    "process": "docker-compose pull && docker-compose up",
+    "process:clean:testLog": "export INDEXER_TEST_LOG_MODE=true && rm -rf .data && npm run build && docker-compose kill && docker-compose pull && docker-compose up",
+    "process:clean": "rm -rf .data && npm run build && docker-compose kill && docker-compose pull && docker-compose up"
   },
+  "homepage": "https://github.com/subquery/subql-starter",
+  "repository": "github:subquery/subql-starter",
   "files": [
     "dist",
     "schema.graphql",
     "project.yaml"
   ],
-  "author": "Jay Ji",
-  "license": "Apache-2.0",
-  "dependencies": {
-    "lodash": "^4.17.21"
+  "resolutions": {
+    "ipfs-unixfs": "6.0.6"
   },
+  "author": "Analog",
+  "license": "Apache-2.0",
   "devDependencies": {
-    "@polkadot/api": "^4",
-    "@subql/cli": "^0.9.3",
-    "@subql/types": "^0.7.1",
-    "typescript": "^4.1.3"
-  }
+    "@subql/cli": "5.4.0",
+    "@subql/node": "5.6.0",
+    "@subql/types": "3.11.4",
+    "fs-extra": "^11.2.0",
+    "js-yaml": "^4.1.0",
+    "node-fetch": "^3.1.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.2",
+    "write-yaml-file": "^5.0.0"
+  },
+  "dependencies": {
+    "bignumber.js": "^9.0.1",
+    "dotenv": "^16.4.5",
+    "prettier": "^3.4.1",
+    "yargs": "^17.7.2"
+  },
+  "exports": {
+    "chaintypes": "src/chaintypes.ts"
+  },
+  "packageManager": "yarn@1.22.22"
 }

@@ -1,7 +1,8 @@
 docker rm -f $(docker-compose ps -a -q)
-sudo rm -rf .data/
-sudo rm -rf dist/
+rm -rf .data/
+rm -rf dist/
+rm -rf src/types/
 yarn
 yarn codegen
 yarn build
-yarn start:docker
+docker-compose up && docker-compose run

@@ -1,0 +1,6 @@
+.*
+docker-compose.yml
+Docker*
+Jenkins*
+*.md
+.git

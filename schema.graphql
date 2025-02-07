@@ -1,85 +1,111 @@
-type Transfer @jsonField {
-  amount: String!
-  to: String!
-  from: String!
-  fee: String!
-  eventIdx: Int!
-  success: Boolean!
-}
-
-type Reward @jsonField {
-  eventIdx: Int!
-  amount: String!
-  isReward: Boolean!,
-  era: Int,
-  stash: String,
-  validator: String
-}
-
-type AccumulatedReward @entity {
-  id: ID! #address
-  amount: BigInt!
-}
-
-type Extrinsic @jsonField {
-  hash: String!
-  module: String!
-  call: String!
-  fee: String!
-  success: Boolean!
+enum HistoryElementType {
+  CALL
+  EVENT
 }
 
 type HistoryElement @entity {
   id: ID!
-  blockNumber: Int!
-  extrinsicIdx: Int,
-  extrinsicHash: String
-  timestamp: BigInt! @index
+  type: HistoryElementType!
+  blockHeight: Int!
+  blockHash: String! @index
+  module: String! @index
+  method: String! @index
   address: String! @index
-  reward: Reward
-  extrinsic: Extrinsic
-  transfer: Transfer
+  networkFee: String!
+  execution: ExecutionResult!
+  timestamp: Int!
+  data: HistoryElementDetails
+  dataTo: String @index
+  dataFrom: String @index
+  dataAssets: [String]
+  calls: [HistoryElementCall!]! @derivedFrom(field: "historyElement")
+  callNames: [String]!
+  updatedAtBlock: Int!
 }
 
-type EraValidatorInfo @entity {
+type HistoryElementDetails @jsonField {
+  data: String # API is implemented by bypassing the scheme - `data` in all mappings is an object, not a String. See https://github.com/subquery/subql/issues/522.
+}
+
+type HistoryElementCall @entity {
   id: ID!
-  address: String! @index
-  era: Int! @index
-  total: BigInt!
-  own: BigInt!
-  others: [IndividualExposure]!
+  historyElement: HistoryElement! @index
+  module: String!
+  method: String!
+  hash: String! @index
+  data: HistoryElementCallDetails
+  updatedAtBlock: Int!
 }
 
-type IndividualExposure @jsonField {
-  who: String!
-  value: String!
+type HistoryElementCallDetails @jsonField {
+  data: String # API is implemented by bypassing the scheme - `data` in all mappings is an object, not a String. See https://github.com/subquery/subql/issues/522.
 }
 
-#enum StakeChangeType {
-#  bonded
-#  unbonded
-#  slashed
-#  rewarded
-#}
+type ExecutionResult @jsonField {
+  success: Boolean!
+  error: Error
+}
 
-type StakeChange @entity {
+type Error @jsonField {
+  moduleErrorId: Int
+  moduleErrorIndex: Int
+  nonModuleErrorMessage: String
+}
+
+enum PayeeType {
+  STAKED
+  STASH
+  CONTROLLER
+  ACCOUNT
+  NONE
+}
+
+type StakingStaker @entity {
   id: ID!
-  blockNumber: Int!
-  extrinsicHash: String
-  eventIdx: Int!
-  timestamp: BigInt! @index
-  address: String! @index
+  eraValidators: [StakingEraValidator!]! @derivedFrom(field: "staker")
+  eraNominators: [StakingEraNominator!]! @derivedFrom(field: "staker")
+  payeeType: PayeeType!
+  payee: String
+  controller: String
+}
+
+type StakingValidator @entity {
+  id: ID!
+  bond: BigInt!
+}
+
+type StakingEraNominator @entity {
+  id: ID!
+  era: StakingEra!
+  bond: BigInt!
+  staker: StakingStaker!
+  nominations: [StakingEraNomination!]! @derivedFrom(field: "nominator")
+}
+
+type StakingEraNomination @entity {
+  id: ID!
+  era: StakingEra!
   amount: BigInt!
-  accumulatedAmount: BigInt!
-  type: String!
+  validator: StakingEraValidator!
+  nominator: StakingEraNominator!
 }
 
-type AccumulatedStake @entity {
+type StakingEraValidator @entity {
   id: ID!
-  amount: BigInt!
+  era: StakingEra!
+  validator: StakingValidator!
+  nominations: [StakingEraNomination!]! @derivedFrom(field: "validator")
+  ownBond: BigInt!
+  totalBond: BigInt!
+  rewardAmount: BigInt!
+  staker: StakingStaker!
 }
 
-type ErrorEvent @entity {
+type StakingEra @entity {
   id: ID!
-  description: String!
+  index: Int! @index
+  start: BigInt! @index
+  validators: [StakingEraValidator!]! @derivedFrom(field: "era")
+  nominators: [StakingEraNominator!]! @derivedFrom(field: "era")
+  nominations: [StakingEraNomination!]! @derivedFrom(field: "era")
 }
