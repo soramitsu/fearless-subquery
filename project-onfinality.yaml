@@ -9,7 +9,7 @@ runner:
     name: '@subql/query'
     version: 2.15.2
 description: ''
-repository: https://github.com/sora-xor/sora-subquery
+repository: https://github.com/soramitsu/fearless-subquery
 schema:
   file: ./schema.graphql
 network:
