@@ -15,8 +15,6 @@ schema:
 network:
   chainId: '0x7a0f5cf23f4cdf391e6adadb4f5193fed975b1b621afbc96a522234c56688adb'
   endpoint: wss://rpc-sora.development.analog.one
-  chaintypes:
-    file: ./types.json
 dataSources:
   - kind: substrate/Runtime
     startBlock: 1
