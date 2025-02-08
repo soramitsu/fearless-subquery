@@ -46,8 +46,5 @@
     "prettier": "^3.4.1",
     "yargs": "^17.7.2"
   },
-  "exports": {
-    "chaintypes": "src/chaintypes.ts"
-  },
   "packageManager": "yarn@1.22.22"
 }
