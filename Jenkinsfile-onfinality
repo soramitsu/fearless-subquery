@@ -1,4 +1,4 @@
-@Library('jenkins-library')
+@Library('jenkins-library@duty/change-subqd-deploy')
 
 def jobParams  = [
     string(defaultValue: '1', name: 'startBlock', trim: true),
