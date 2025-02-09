@@ -70,7 +70,7 @@ class HistoryElementsStorage {
 export const historyElementsStorage = new HistoryElementsStorage();
 
 export const getExtrinsicNetworkFee = (extrinsic: SubstrateExtrinsic): string => {
-  const feeEvent = extrinsic.events.find((e) => isEvent(e, 'xorFee', 'FeeWithdrawn'));
+  const feeEvent = extrinsic.events.find((e) => isEvent(e, 'transactionPayment', 'TransactionFeePaid'));
 
   if (feeEvent) {
     const [, feeAmount] = getEventData(feeEvent);
